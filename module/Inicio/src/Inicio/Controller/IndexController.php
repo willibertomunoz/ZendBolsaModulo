@@ -61,11 +61,11 @@ class IndexController extends AbstractActionController {
     public function loginAction() {
         $auth = $this->auth;
         $usuario = new Container("usuario");
-        $usuario->setExpirationSeconds(20);
+        $usuario->setExpirationSeconds(60);
         $identi = $auth->getStorage()->read();
         $modal = NULL;
         if (!is_null($usuario->id) && $identi->status == 1) {
-            $this->redirigir($identi->tipo_usuario);
+            $this->redirigir($identi->tipo_usuario,$identi->status);
         }
         //DbAdapter
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
@@ -142,7 +142,7 @@ class IndexController extends AbstractActionController {
         if ($status == 0) {
             $this->flashMessenger()->addMessage("Usuario esta dada de baja, contacte al administrador");
             return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/login');
-        }
+        }else
         switch ($usuario) {
             case 1:
                 //Nos redirige a una pagina interior
