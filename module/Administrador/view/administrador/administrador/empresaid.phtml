@@ -1,0 +1,45 @@
+<div class="inner-content">
+    <div class="panel theme-panel" >
+        <dl class="dl-horizontal">
+            <dt>Nombre:</dt>
+            <dd><?php echo $empresa["nombre_comercial"]; ?></dd>
+            <dt>RFC:</dt>
+            <dd><?php echo $empresa["id_rfc"]; ?></dd>
+            <dt>Digito verificador:</dt>
+            <dd><?php echo $empresa["digito_verificador"]; ?></dd>
+            <dt>Giro:</dt>
+            <dd><?php echo $empresa["giro_empresa"]; ?></dd>
+            <dt>Telefono:</dt>
+            <dd><a href="tel:<?php echo $empresa["telefono"]; ?>"><?php echo $empresa["telefono"]; ?></a></dd>
+            <dt>Extensión</dt>
+            <dd><?php echo $empresa["extension"]; ?></dd>
+            <dt>Email:</dt>
+            <dd><?php echo $empresa["correo_electronico"]; ?></dd>
+            <dt>Horario de Atencion</dt>
+            <dd><?php echo $empresa["horario_atencion"]; ?></dd>
+            <dt>Autorizacion:</dt>
+            <dd><?php
+                if ($empresa["autorizacion"] == 0)
+                    echo "pendiente";
+                else if ($empresa["autorizacion"] == 1)
+                    echo "Autorizada";
+                else
+                    echo "rechazada";
+                ?></dd>
+        </dl>
+    </div>
+</div>
+<div class="modal-footer"><div align="left" >
+        <button type="button" class="btn btn-default" onclick="autorizarF(this)"<?php
+                if ($empresa["autorizacion"] == 1)
+                    echo "disabled";?>
+                rfc="<?php echo $empresa["id_rfc"];?>" digito="<?php echo $empresa["digito_verificador"];?>"
+                data-dismiss="modal">Autorizar</button>
+        <button type="button" class="btn btn-default" onclick="rechazarF(this)"
+                rfc="<?php echo $empresa["id_rfc"];?>" digito="<?php echo $empresa["digito_verificador"];?>"<?php
+                if ($empresa["autorizacion"] == 2)
+                    echo "disabled";?>
+                data-dismiss="modal">Rechazar</button>
+    </div>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+</div>

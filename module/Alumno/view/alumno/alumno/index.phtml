@@ -1,0 +1,67 @@
+<div class="inner-content">
+    <div class="panel theme-panel">
+        <div class="panel-heading">
+            <span class="panel-title">
+                Vacantes <i class="fa fa-fire"></i>
+            </span>
+        </div>
+        <div class="panel-body">
+            <div class="row clearfix">
+                <?php
+                $a = 0;
+                foreach ($this->vacantes as $empresa): // <-- change here!  
+                    $a++;
+                    ?>
+                    <div class="col-md-3 column">
+                        <a href="#" id="ver<?php echo $a ?>" rfc="<?php echo $empresa["id_rfc"]?>"
+                           digito="<?php echo $empresa["digito_verificador"]?>" vacante="<?php echo $empresa["num_vacante"]?>">
+                            <div class="feature-box">
+                                <span class="feature-icon"><i class="fa fa-newspaper-o"></i></span></br>
+                                <span><?php echo $empresa["nombre_comercial"]; ?></span>
+                                <h4><strong>Solicita <br/><?php echo $empresa["puesto"]; ?></strong></h4>
+                            </div>
+                        </a>
+                    </div>
+                    <?php if ($a / 4 == 0 && $a > 3 || $a / 4 == 2 && $a > 7) { ?>
+                    </div>
+                    <div class="row clearfix">
+                        <?php
+                    } else if ($a == 12) {
+                        break;
+                    }
+                endforeach;
+                ?>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" align="center">Vacante</h4>
+            </div>
+            <form id="formdigito" method="post" action="empresa" role="form">
+                <div class="modal-body" id="vacanteDiv">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+<?php for ($i = 1; $i <= $a; $i++) { ?>
+        $("#ver<?php echo $i; ?>").on('click', function (event) {
+            $('#vacanteDiv').html('<div align="center"><img src="http://img.ffffound.com/static-data/assets/6/77443320c6509d6b500e288695ee953502ecbd6d_m.gif"/></div>');
+            $("#vacanteDiv").load("vacanteid", {id_rfc: $(this).attr("rfc"),
+                digito_verificador: $(this).attr("digito"), num_vacante: $(this).attr("vacante")
+            });
+            $("#myModal").modal("show");
+        });
+<?php } ?>
+</script>

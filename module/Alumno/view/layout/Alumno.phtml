@@ -1,0 +1,306 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <meta name="theme-color" content="#3498db">
+        <?php echo $this->headTitle($this->translate('Bolsa de trabajo'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+//                ->prependStylesheet($this->basePath('css/style.css'))
+//                ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                ->prependStylesheet($this->basePath('awesome/css/font-awesome.min.css'))
+                ->prependStylesheet($this->basePath('css/newcss.css'))
+                ->prependStylesheet($this->basePath('css/hoe.css'))
+//                ->prependStylesheet($this->basePath('css/bootstrap.css'));
+        ?>
+
+        <!-- Scripts -->
+        <?php
+        echo $this->headScript()
+//                ->prependFile($this->basePath('js/bootstrap.min.js'))
+//                ->prependFile($this->basePath('js/jquery.min.js'))
+//                ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+//                ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+//                ->prependFile($this->basePath('js/bootstrap-formhelpers-phone.js'))
+                ->prependFile($this->basePath('js/ajax.js'))
+                ->prependFile($this->basePath('js/hoe.js'))
+                ->prependFile($this->basePath('js/bootstrap.min.js', ' '))
+                ->prependFile($this->basePath('js/jquery.min.js'))
+
+
+        ;
+        ?>
+
+    </head>
+    <body  hoe-navigation-type="vertical" hoe-nav-placement="left" theme-layout="wide-layout" theme-bg="bg1" onload="parar()" onkeypress="parar()" onclick="parar()">
+        <header id="header">
+            <div class="container">
+                <div class="art-header">
+                    <a href="https://www.unam.mx/" title="UNAM.mx" rel="home" >
+                        <img src="https://www.unam.mx/sites/all/themes/unam/logo.png"  height="80" style="width: 30%;"
+                             alt="UNAM.mx" />
+                    </a>
+                    <a href="http://www.cuautitlan.unam.mx/" title="Facultad de Estudios Superiores Cuautitlan" rel="home" >
+                        <img src="http://www.cuautitlan.unam.mx/imgs/stock/rotate.php" style="width: 50%; float: right;"
+                             alt="FES Cuautitlán" height="80"/>
+                    </a>
+                    <div class="fecha" align="right" style="width: 100%;">    
+                        <b>  
+                            <script  >
+                                var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+                                var diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+                                var f = new Date();
+                                document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
+                            </script>
+                        </b>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+        <div class="container">
+            <div id="hoeapp-wrapper" class="hoe-hide-lpanel">
+                <header id="hoe-header" >
+                    <div class="hoe-left-header">
+                        <a href="#"><i class="fa fa-graduation-cap"></i> <span>Alumno</span></a>
+                        <span class="hoe-sidebar-toggle"><a href="#"></a></span>
+                    </div>
+
+                    <div class="hoe-right-header">
+                        <span class="hoe-sidebar-toggle"><a href="#"></a></span>
+                        <ul class="left-navbar">
+                            <li class="dropdown hoe-rheader-submenu message-notification">
+                                <a href="#" class="dropdown-toggle icon-circle" data-toggle="dropdown">
+                                    <i class="fa fa-envelope-o"></i>
+                                    <span class="badge badge-danger">5</span>
+                                </a>
+                                <ul class="dropdown-menu ">
+                                    <li class="hoe-submenu-label">
+                                        <h3>You have <span class="bold">5</span> New Messages <a href="#">view all</a></h3>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="clearfix"> 
+                                            <img src="<?php echo $this->basePath("../data/img/" . $this->rfc . ".jpg"); ?>" class="img-circle notification-avatar" alt="Avatar">
+                                            <span class="notification-title">Nanterey Reslaba</span>
+                                            <span class="notification-ago  ">3 min ago</span>
+                                            <p class="notification-message">Hi James, Don't go anywhere, i will be coming soon. </p>
+                                        </a>
+                                    </li> 
+                                </ul>
+                            </li>
+                            <li class="dropdown hoe-rheader-submenu message-notification left-min-30">
+                                <a href="#" class="dropdown-toggle icon-circle" data-toggle="dropdown" >
+                                    <i class="fa fa-bell-o"></i>
+                                    <span class="badge badge-success">6</span>
+                                </a>
+                                <ul class="dropdown-menu ">
+                                    <li class="hoe-submenu-label">
+                                        <h3><span class="bold">6 pending</span> Notification <a href="#">view all</a></h3>
+                                    </li>
+
+                                    <li>
+                                        <a href="#" class="clearfix"> 
+                                            <i class="fa fa-exchange green-text"></i>   
+                                            <span class="notification-title">Installing App v1.2.1</span>
+                                            <span class="notification-ago  ">60 % Done</span>
+                                            <p class="notification-message"></p>
+                                            <div class="progress">
+                                                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                     aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:60%"> 60%
+                                                </div>
+                                            </div>
+                                            
+                                        </a>
+                                    </li> 
+                                </ul>
+                            </li> 
+                            <li class="dropdown hoe-rheader-submenu message-notification left-min-65">
+                                <a href="#" class="dropdown-toggle icon-circle" data-toggle="dropdown" >
+                                    <i class="fa fa-tasks"></i>
+                                    <span class="badge badge-danger">4</span>
+                                </a>
+                                <ul class="dropdown-menu ">
+                                    <li class="hoe-submenu-label">
+                                        <h3> You have <span class="bold">4 </span>pending Task <a href="#">view all</a></h3>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="clearfix"> 
+                                            <img alt="Avatar" class="img-circle notification-avatar" src="<?php echo $this->basePath("../data/img/" . $this->rfc . ".jpg"); ?>">
+                                            <span class="notification-title"> Smith Doe Assigned new task </span>
+                                            <span class="notification-ago-1 ">5 min ago</span>
+                                            <p class="notification-message">Provide an Overview key mention characteristics for selected Keyword.</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <form method="post" class="hoe-searchbar">
+                                    <input type="text" placeholder="Search..." name="keyword" class="form-control">
+                                    <span class="search-icon"><i class="fa fa-search"></i></span>
+                                </form>
+                            </li>
+
+                        </ul> 
+
+                        <ul class="right-navbar">
+                            <li class="dropdown hoe-rheader-submenu hoe-header-profile">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <span><img class="img-circle " src="<?php echo $this->basePath("../data/img/" . $this->rfc . ".jpg"); ?>"></span>
+                                    <span><?php echo $this->nombre; ?> <i class=" fa fa-angle-down"></i></span>
+                                </a> 
+                                <ul class="dropdown-menu ">
+                                    <li><a href="#"><i class="fa fa-user"></i>My Profile</a></li>
+                                    <li><a href="#"><i class="fa fa-calendar"></i>My Calendar</a></li>
+                                    <li><a href="#"><i class="fa fa-envelope"></i>My Inbox  <span class="badge badge-danger">
+                                                3 </span></a></li>
+                                    <li><a href="#"><i class="fa fa-rocket"></i>My Tasks <span class="badge badge-success">
+                                                7 </span></a></li>
+                                    <li><a href="#"><i class="fa fa-lock"></i>Lock Screen</a></li>
+                                    <li><a href="#"><i class="fa fa-power-off"></i>Logout</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown hoe-rheader-submenu hidden-xs">
+                                <a href="#" class="dropdown-toggle icon-circle" data-toggle="dropdown"><i class="fa fa-ellipsis-h"></i></a> 
+                            </li> 
+                        </ul>
+
+                    </div>
+                </header>
+                <div id="hoeapp-container" hoe-color-type="lpanel-bg2">
+                    <aside id="hoe-left-panel" >
+                        <div class="profile-box">
+                            <div class="media">
+                                <a class="pull-left" href="user-profile.html">
+                                    <img class="img-circle" src="<?php echo $this->basePath("../data/img/" . $this->rfc . ".jpg"); ?>">
+                                </a>
+                                <div class="media-body">
+                                    <h5 class="media-heading">Bienvenido <span><?php echo ucwords($this->nombre); ?></span></h5>
+                                    <small><?php echo $this->carrera ?></small>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="nav panel-list">
+                            <li class="nav-level">Menu</li>
+                            <li class="active">
+                                <a href="javascript:void(0)" >
+                                    <i class="fa fa-tachometer"></i>
+                                    <span class="menu-text">Dashboard</span>
+                                    <span class="selected"></span>
+                                </a>
+                            </li>
+
+                            <li class="hoe-has-menu">
+                                <a href="javascript:void(0)">
+                                    <i class="fa fa-files-o"></i>
+                                    <span class="menu-text">Perfil</span>
+                                    <span class="selected"></span>
+                                </a>
+                                <ul class="hoe-sub-menu">
+                                    <li>
+                                        <a href="#" id="pass" class="menup">
+                                            <span class="menu-text">Cabiar contraseña</span>
+                                            <span class="selected"></span>
+                                        </a>
+                                    </li>
+                                    <li class="hoe-has-menu">
+                                        <a href="javascript:void(0)">
+                                            <span class="menu-text">Actualizar</span>
+                                            <span class="selected"></span>
+                                        </a>
+                                        <ul class="hoe-sub-menu">
+                                            <li>
+                                                <a href="#" id="d_personales" class="menup">
+                                                    <span class="menu-text">Datos Personales</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" id="direccion" class="menup">
+                                                    <span class="menu-text">Direccion</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" id="d_academicos" class="menup">
+                                                    <span class="menu-text">Datos Academicos</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#r" id="r_laborales" class="menup">
+                                                    <span class="menu-text">Referencias Laborales</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" id="d_complementario" class="menup">
+                                                    <span class="menu-text">Datos Complementarios</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+                                            <li>
+
+                                                <a href="#" id="idiomas" class="menup">
+                                                    <span class="menu-text">Idiomas</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#" id="vacantes" class="menup">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                    <span class="menu-text">Vacantes</span> 
+                                    <span class="selected"></span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" id="postulaciones" class="menup">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                    <span class="menu-text">Postulaciones</span> 
+                                    <span class="selected"></span>
+                                </a>
+                            </li>
+                            <!--                            <li>
+                                                            <a href="#"  id="curriculum" class="menup">
+                                                                <i class="fa fa-graduation-cap"></i>
+                                                                <span class="menu-text">Curriculum</span> 
+                                                                <span class="selected"></span>
+                                                            </a>
+                                                        </li>-->
+                            <li>
+                                <a href="cerrar" >
+                                    <i class="fa fa-sign-out"></i>
+                                    <span class="menu-text">Cerrar Sesi&oacute;n</span> 
+                                    <span class="selected"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </aside>
+                    <section id="main-content" >
+                        <?php echo $this->content ?>
+                    </section>
+
+                </div>
+            </div>
+            <footer class=" footer_p">
+                <p align="center">Creditos</p>
+            </footer><!--/#footer-->
+        </div>
+        <?php echo $this->inlineScript() ?>
+
+    </body>
+    
+</html>

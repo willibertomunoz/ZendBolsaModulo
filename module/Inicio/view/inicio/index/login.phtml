@@ -1,0 +1,89 @@
+<h1 align="center">Bienvenido</h1>
+<hr/>
+<?php
+$this->headTitle("Login usuarios");
+$form = $this->form;
+$form->prepare();
+?>
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>-->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" align="center">Digite su numero verificador</h4>
+            </div>
+            <form id="formdigito" method="post" action="empresa" role="form">
+                <div class="modal-body">
+                    <input type="number" name="digito" class="form-control" > 
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" >Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container col-lg-12">
+    <div class=" card card-container">
+        <?php
+        echo $this->form()->openTag($form);
+        if (is_null($rfc)) {
+            ?> <img id="profile-img" class="profile-img-card" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" /> <?php
+        } else {
+            ?> <img class="profile-img-card" src="<?php echo $this->basePath("../data/img/" . $rfc . ".jpg"); ?> " alt="" /><?php
+        }
+        ?>
+        <p id="profile-name" class="profile-name-card"></p>
+        <div class="form-group">
+            <?php
+            $id_rfc = $form->get('id_rfc');
+            $id_rfc->setValue($rfc);
+            echo "RFC: " . $this->formInput($id_rfc);
+            if (isset($error["id_rfc"])) {
+                echo $error["id_rfc"]['id_rfcAddressInvalidHostname'];
+            }
+            ?>
+        </div>
+        <div class="form-group">
+            <?php
+            $pass = $form->get('password');
+            echo "Contraseña: " . $this->formInput($pass);
+            echo $this->formElementErrors($pass);
+            ?>
+        </div>
+
+        <?php
+        echo $this->flashMessenger()->render();
+
+        echo $this->formElement($form->get('submit'));
+        echo $this->form()->closeTag();
+        ?>
+    </div>
+</div>
+<script>
+//    $(document).ready(function () {
+//        $("#formdigito").submit(function (e) {
+//         alert("ws");    
+//        $.ajax({
+//                type: "POST",
+//                url: "empresa",
+//                data: $("#formdigito").serialize(), // serializes the form's elements.
+//                success: function (data)
+//                {
+//                    alert(data);
+//                }
+//            });
+//
+//            e.preventDefault(); // avoid to execute the actual submit of the form.
+//        });
+//    });
+</script>
+<?php
+if (!is_null($modal)) {
+    ?>
+    <script>$("#myModal").modal("show");    </script>
+
+    <?php
+}    

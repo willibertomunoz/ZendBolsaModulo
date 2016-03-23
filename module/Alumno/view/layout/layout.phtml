@@ -1,0 +1,164 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="es">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('Bolsa de trabajo'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Le styles -->
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+//                ->prependStylesheet($this->basePath('css/style.css'))
+//                ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                ->prependStylesheet($this->basePath('css/newcss.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap.css'));
+        ?>
+
+        <!-- Scripts -->
+        <?php
+        echo $this->headScript()
+//                ->prependFile($this->basePath('js/bootstrap.min.js'))
+//                ->prependFile($this->basePath('js/jquery.min.js'))
+//                ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+//                ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath('js/bootstrap.min.js', ' '))
+                ->prependFile($this->basePath('js/jquery.js'))
+                ->prependFile($this->basePath('js/jssor.slider.mini.js'))
+
+        ;
+        ?>
+
+    </head>
+    <body>
+        <header id="header">
+            <div class="container">
+                <div class="art-header">
+                    <a href="/" title="UNAM.mx" rel="home" >
+                        <img src="https://www.unam.mx/sites/all/themes/unam/logo.png"  height="80" style="width: 30%;"
+                             alt="UNAM.mx" />
+                    </a>
+                    <a href="http://www.cuautitlan.unam.mx/" title="Facultad de Estudios Superiores Cuautitlan" rel="home" >
+                        <img src="http://www.cuautitlan.unam.mx/imgs/stock/rotate.php" style="width: 50%; float: right;"
+                             alt="FES Cuautitlán" height="80"/>
+                    </a>
+                    <div class="fecha" align="right" style="width: 100%;">    
+                        <b>  
+                            <script  >
+                                var meses = new Array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+                                var diasSemana = new Array("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado");
+                                var f = new Date();
+                                document.write(diasSemana[f.getDay()] + ", " + f.getDate() + " de " + meses[f.getMonth()] + " de " + f.getFullYear());
+                            </script>
+                        </b>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+        <nav class="container">
+            <div id="navbar" class="navbar navbar-default" >
+                <div class="navbar-header" >
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html"></a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" >
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="">Inicio</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+                               aria-haspopup="true" aria-expanded="false">Registrate<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Alumno</a></li>
+                                <li><a href="#">Empresa</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" 
+                               aria-haspopup="true" aria-expanded="false">Acerca de nosostros <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="<?php
+                                    echo $this->url('inicio', array(
+//                                        'controller' => 'index',
+                                        'action' => 'mision'))
+                                    ?>">Mision</a></li>
+                                <li><a href="">Vision</a></li>
+                                <li><a href="">Objetivos</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#about-us">Contactanos</a></li>
+                        <li><a href="">Practicas profesionales</a></li>
+
+                    </ul>
+                </div>
+
+            </div></nav>
+        <div class="container">
+            <div class="box row">
+<?php echo $this->content ?>
+            </div>
+            <footer class=" footer_p">
+                <p align="center">Creditos</p>
+            </footer><!--/#footer-->
+        </div>
+<?php echo $this->inlineScript() ?>
+        <script>
+            jQuery(document).ready(function ($) {
+
+                var jssor_1_SlideshowTransitions = [
+                    {$Duration: 1200, x: 0.2, y: -0.1, $Delay: 20, $Cols: 8, $Rows: 4, $Clip: 15, $During: {$Left: [0.3, 0.7], $Top: [0.3, 0.7]}, $Formation: $JssorSlideshowFormations$.$FormationStraightStairs, $Assembly: 260, $Easing: {$Left: $Jease$.$InWave, $Top: $Jease$.$InWave, $Clip: $Jease$.$OutQuad}, $Outside: true, $Round: {$Left: 1.3, $Top: 2.5}},
+                    {$Duration: 1500, x: 0.3, y: -0.3, $Delay: 20, $Cols: 8, $Rows: 4, $Clip: 15, $During: {$Left: [0.1, 0.9], $Top: [0.1, 0.9]}, $SlideOut: true, $Formation: $JssorSlideshowFormations$.$FormationStraightStairs, $Assembly: 260, $Easing: {$Left: $Jease$.$InJump, $Top: $Jease$.$InJump, $Clip: $Jease$.$OutQuad}, $Outside: true, $Round: {$Left: 0.8, $Top: 2.5}},
+                    {$Duration: 1500, x: 0.2, y: -0.1, $Delay: 20, $Cols: 8, $Rows: 4, $Clip: 15, $During: {$Left: [0.3, 0.7], $Top: [0.3, 0.7]}, $Formation: $JssorSlideshowFormations$.$FormationStraightStairs, $Assembly: 260, $Easing: {$Left: $Jease$.$InWave, $Top: $Jease$.$InWave, $Clip: $Jease$.$OutQuad}, $Outside: true, $Round: {$Left: 0.8, $Top: 2.5}},
+                    {$Duration: 1500, x: 0.3, y: -0.3, $Delay: 80, $Cols: 8, $Rows: 4, $Clip: 15, $During: {$Left: [0.3, 0.7], $Top: [0.3, 0.7]}, $Easing: {$Left: $Jease$.$InJump, $Top: $Jease$.$InJump, $Clip: $Jease$.$OutQuad}, $Outside: true, $Round: {$Left: 0.8, $Top: 2.5}},
+                    {$Duration: 1800, x: 1, y: 0.2, $Delay: 30, $Cols: 10, $Rows: 5, $Clip: 15, $During: {$Left: [0.3, 0.7], $Top: [0.3, 0.7]}, $SlideOut: true, $Reverse: true, $Formation: $JssorSlideshowFormations$.$FormationStraightStairs, $Assembly: 2050, $Easing: {$Left: $Jease$.$InOutSine, $Top: $Jease$.$OutWave, $Clip: $Jease$.$InOutQuad}, $Outside: true, $Round: {$Top: 1.3}},
+                    {$Duration: 1000, $Delay: 30, $Cols: 8, $Rows: 4, $Clip: 15, $SlideOut: true, $Formation: $JssorSlideshowFormations$.$FormationStraightStairs, $Assembly: 2049, $Easing: $Jease$.$OutQuad},
+                    {$Duration: 1000, $Delay: 80, $Cols: 8, $Rows: 4, $Clip: 15, $SlideOut: true, $Easing: $Jease$.$OutQuad},
+                    {$Duration: 1000, y: -1, $Cols: 12, $Formation: $JssorSlideshowFormations$.$FormationStraight, $ChessMode: {$Column: 12}},
+                    {$Duration: 1000, x: -0.2, $Delay: 40, $Cols: 12, $SlideOut: true, $Formation: $JssorSlideshowFormations$.$FormationStraight, $Assembly: 260, $Easing: {$Left: $Jease$.$InOutExpo, $Opacity: $Jease$.$InOutQuad}, $Opacity: 2, $Outside: true, $Round: {$Top: 0.5}},
+                    {$Duration: 2000, y: -1, $Delay: 60, $Cols: 15, $SlideOut: true, $Formation: $JssorSlideshowFormations$.$FormationStraight, $Easing: $Jease$.$OutJump, $Round: {$Top: 1.5}}
+                ];
+                var jssor_1_options = {
+                    $AutoPlay: true,
+                    $SlideshowOptions: {
+                        $Class: $JssorSlideshowRunner$,
+                        $Transitions: jssor_1_SlideshowTransitions,
+                        $TransitionsOrder: 1
+                    },
+                    $ArrowNavigatorOptions: {
+                        $Class: $JssorArrowNavigator$
+                    },
+                    $BulletNavigatorOptions: {
+                        $Class: $JssorBulletNavigator$
+                    }
+                };
+                var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+                //responsive code begin
+                //you can remove responsive code if you don't want the slider scales while window resizing
+                function ScaleSlider() {
+                    var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+                    if (refSize) {
+                        refSize = Math.min(refSize, 700);
+                        jssor_1_slider.$ScaleWidth(refSize);
+                    }
+                    else {
+                        window.setTimeout(ScaleSlider, 30);
+                    }
+                }
+                ScaleSlider();
+                $(window).bind("load", ScaleSlider);
+                $(window).bind("resize", ScaleSlider);
+                $(window).bind("orientationchange", ScaleSlider);
+                //responsive code end
+            });</script>
+    </body>
+</html>

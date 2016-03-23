@@ -1,0 +1,29 @@
+<div class="inner-content">
+    <div class="panel theme-panel">
+        <div class="alert alert-success" align="center" id="success" style="display: none;">Datos actualizados</div>
+        <?php
+// module/Album/view/album/album/add.phtml:
+        $title = 'Datos Complementarios';
+        $this->headTitle($title);
+        ?>
+        <h1 align="center"><?php echo $this->escapeHtml($title); ?></h1>
+        <?php echo $form->getFormulario(); ?>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#preferencialab").submit(function (e) {
+            $.ajax({
+                type: "POST",
+                url: "datoscomplementarios",
+                data: $("#preferencialab").serialize(), // serializes the form's elements.
+                success: function ()
+                {
+                    var success = document.getElementById("success");
+                    success.style.display = "block";
+                }
+            });
+
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        });
+    });</script>

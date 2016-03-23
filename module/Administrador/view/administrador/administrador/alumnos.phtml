@@ -1,0 +1,122 @@
+<div class="inner-content">
+    <div class="panel theme-panel">
+        <div class="panel-heading">
+
+            <span class="panel-title">Alumno<i class="fa fa-graduation-cap"></i>
+            </span>
+        </div>
+        <div class="alert alert-success" role="alert" id="success" style="display: none;" align="center">Alumno Actualizado</div>
+        <div id="table">
+
+            <div class="panel-body table-responsive" id="mi-tabla" cellspacing="0" cellpadding="0">
+                <table class="table table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th><span>No. Cuenta</span></th>
+                            <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>Correo</th>
+                            <th>Perfil</th>
+                            <th>Ver</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $a = 0;
+                        foreach ($this->paginator as $alumno) : // <-- change here!  
+                            $a++;
+                            ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($alumno->id_cuenta); ?></td>
+                                <td><?php echo $this->escapeHtml($alumno->nombre); ?></td>
+                                <td><?php
+                                    echo $this->escapeHtml($alumno->apellido_paterno) . " " .
+                                    $this->escapeHtml($alumno->apellido_materno);
+                                    ?></td>
+                                <td><?php echo $this->escapeHtml($alumno->email_principal); ?></td>
+                                <td><?php
+                                    if ($alumno->tipo_perfil == 1)
+                                        echo "Publico";
+                                    else {
+                                        echo "privado";
+                                    }
+                                    ?></td>
+                                <td><a href="#" id_cuenta="<?php echo $alumno->id_cuenta;?>" rfc="<?php echo $alumno->rfc;?>"
+                                       onclick="anclaF(this)">Ver</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php
+                if ($this->paginator->count() == 0)
+                    echo"<h1 align='center'>No hay Alumnos</h1>";
+                ?>
+            </div>
+            </div>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Alumno</h4>
+                        </div>
+                        <div class="modal-body" id="bodymodal">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+            // add at the end of the file after the table
+            echo $this->paginationControl(
+                    // the paginator object
+                    $this->paginator,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                'url' => $this->url('Administrador', array('controller' => 'Administrador', 'action' => 'alumnos'))
+                    )
+            );
+            ?>
+        
+    </div>
+</div>
+<script>
+    function anclaF(e) {
+        $("#myModal").modal("show");
+//        $('#bodymodal').html('<div align="center"><img src="http://img.ffffound.com/static-data/assets/6/77443320c6509d6b500e288695ee953502ecbd6d_m.gif"/></div>');
+        $("#bodymodal").load("alumnocuenta", {id_cuenta: $(e).attr("id_cuenta"),rfc: $(e).attr("rfc")
+        });
+    }
+    function autorizarF(e) {
+        $.post('alumnos', {id_rfc: $(e).attr("rfc"), status: 1})
+                .done(function () {
+                    var success = document.getElementById("success");
+                    success.style.display = "block";
+                    setTimeout(function () {
+                        document.getElementById("success").style.display = "none";
+                        $("#table").load("alumnos #table");
+                    }, 2000);
+                })
+                .fail(function (data) {
+                    alert(data);
+                });
+    }
+    function rechazarF(e) {
+        $.post('alumnos', {id_rfc: $(e).attr("rfc"), status: 0})
+                .done(function () {
+                    var success = document.getElementById("success");
+                    success.style.display = "block";
+                    setTimeout(function () {
+                        document.getElementById("success").style.display = "none";
+                        $("#table").load("alumnos #table");
+                    }, 2000);
+                })
+                .fail(function (data) {
+                    alert(data);
+                });
+    }
+</script>

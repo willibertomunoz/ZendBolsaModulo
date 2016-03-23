@@ -1,0 +1,66 @@
+ <?php $i=0;if ($this->pageCount): ?>
+     <div align="right">
+         <ul class="pagination">
+             <!-- Previous page link -->
+             <?php if (isset($this->previous)): ?>
+                 <li>
+                     <a href="#?page=<?php echo $this->previous; ?>" id="previous">
+                         <<
+                     </a>
+                 </li>
+             <?php else: ?>
+                 <li class="disabled">
+                     <a href="#">
+                         <<
+                     </a>
+                 </li>
+             <?php endif; ?>
+
+             <!-- Numbered page links -->
+             <?php foreach ($this->pagesInRange as $page): ?>
+                 <?php if ($page != $this->current): ?>
+                     <li>
+                         <a href="#?page=<?php echo $page; ?>" id="current<?php echo $page; ?>">
+                             <?php echo $page; ?>
+                         </a>
+                     </li>
+                 <?php else: ?>
+                     <li class="active">
+                         <a href="#"><?php echo $page; ?></a>
+                     </li>
+                 <?php endif; ?>
+             <?php endforeach; ?>
+
+             <!-- Next page link -->
+             <?php if (isset($this->next)): ?>
+                 <li>
+                     <a href="#?page=<?php echo $this->next; ?>" id="next">
+                         >>
+                     </a>
+                 </li>
+             <?php else: ?>
+                 <li class="disabled">
+                     <a href="#">
+                         >>
+                     </a>
+                 </li>
+             <?php endif; ?>
+         </ul>
+     </div>
+ <?php endif; ?>
+<script>
+    jQuery(function ($) {
+    $("#next").on('click', function (event) {
+        $("#main-content").load("<?php echo $this->url; ?>?page=<?php echo $this->next; ?>");
+    });
+    $("#previous").on('click', function (event) {
+        $("#main-content").load("<?php echo $this->url; ?>?page=<?php echo $this->previous; ?>");
+    });
+    <?php for($i=1;$i<=$page;$i++){?>
+    $("#current<?php echo $i; ?>").on('click', function (event) {
+//        alert("hola");
+        $("#main-content").load("<?php echo $this->url;?>?page=<?php echo $i; ?>");
+    });
+    <?php }?>
+});
+    </script>

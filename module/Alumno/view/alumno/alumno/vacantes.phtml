@@ -1,0 +1,247 @@
+<!--<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>--> 
+<style>
+    .modalDialog {
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+        opacity:0;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        pointer-events: none;
+    }
+
+    .modalDialog:target {
+        opacity:1;
+        pointer-events: auto;
+    }
+    @media (max-width: 767px) {
+        .modalDialog > div {
+            width: 300px;
+        }
+    }
+    @media (max-height: 500px) {
+        .modalDialog > div {
+            height: 80%;
+        }
+        .modalDialog1 {
+            height: 80%;
+        }
+    }
+    @media (min-width: 768px) {
+        .modalDialog > div {
+            width: 700px;}
+
+    }
+    .modalDialog1{
+        overflow: auto;
+    }
+    .modalDialog > div {
+        /*width: 400px;*/
+        /*overflow: auto;*/
+        /*background-color:#3ea2e5;*/
+        position: relative;
+        margin: 7% auto;
+        /*padding: 5px 20px 13px 20px;*/
+        border-radius: 10px;
+        /*background: #3ea2e5;*/
+        /*background: -moz-linear-gradient(#3ea2e5, #999);*/
+        background: -webkit-linear-gradient(#3ea2e5, #8BC5F8);
+        background-color: #8BC5F8;
+        /*background: -o-linear-gradient(#3ea2e5, #999);*/
+    }
+
+    .close {
+        background: #606061;
+        color: #FFFFFF;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+    }
+
+    .close:hover { background: #00d9ff; }
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<div class="inner-content">
+    <div class="panel theme-panel">
+        <div class="panel-heading">
+
+            <span class="panel-title">
+                Vacantes <i class="fa fa-pencil-square-o"></i>
+            </span>
+        </div>
+        <form method="post"  role="form" id="direccionform">        
+            <div class="input-group form-group form-inline">
+                <span class="input-group-addon" id="basic-addon1">Edad</span>
+                <select name="edad" class="form-control" id="edad" onchange="edadF()">
+                    <option>...</option>
+                    <option value='21'>18 - 23 años</option>
+                    <option value='26'>24 - 28 años</option>
+                    <option value='31'>29 - 33 años</option>
+                    <option value='26'>34 - 38 años</option>
+                    <option value='41'>39 - 43 años</option>
+                    <option value='46'>43 - o más años</option>
+                </select>          
+                <span class="input-group-addon">Horario</span>
+                <select name="id_horario" class="form-control"id="horario" onchange="horarioF()" required>
+                    <option>...</option>
+                    <option value='HL02' >Turno Vespertino</option>
+                    <option value='HL03'>Turno Nocturno</option>
+                    <option value='HL04'>Rolar Turnos</option>
+                </select>
+                <span class="input-group-addon" id="basic-addon1">Sexo</span>
+                <select name="sexo" class="form-control"  id="sexo" onchange="sexoF()" required>
+                    <option>...</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Indistinto">Indistinto</option>
+                </select>
+
+                <span class="input-group-addon">Sueldo</span>
+                <select name="sueldo_deseado" class="form-control" id="sueldo" onchange="sueldoF()" required>
+                    <option>...</option>
+                    <option value='0'> $ 0 - 5,000 Mensuales</option>
+                    <option value='5000'> $ 5,000 - 10,000 Mensuales</option>
+                    <option value='10000'> $ 10,000 - 15,000 Mensuales</option>
+                    <option value='15000'> $ 15,000 - 20,000 Mensuales</option>
+                    <option value='20000'> $ 20,000 - 25,000 Mensuales</option>
+                    <option value='25000'> $ 25,000 - 30,000 Mensuales</option>
+                    <option value='30000'> $ 30,000 - 35,000 Mensuales</option>
+                    <option value='35000'> $ 35,000 - 40,000 Mensuales</option>
+                    <option value='40000'> $ 40,000 - 45,000 Mensuales</option>
+                    <option value='45000'> $ 45,000 - 50,000 Mensuales</option>
+                    <option value='50000'> $ 50,000 - o más Mensuales</option> 
+                </select>
+
+            </div>
+
+        </form> 
+        <div class="alert alert-success" role="alert" id="success" style="display: none;" align="center">Te has postulado correctamente</div>
+        <div id="table">
+
+            <div class="panel-body table-responsive" >
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Puesto</th>
+                            <th>Sueldo</th>
+                            <th>Sexo</th>
+                            <th>Edad</th>
+                            <th>Horario</th>
+                            <th>Dias a laborar</th>
+                            <th>Postularme</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $a = 0;
+                        foreach ($this->paginator as $empresa) : // <-- change here!  
+                            $a++;
+                            ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($empresa->nombre_comercial); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->puesto); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->sueldo); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->sexo); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->edad); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->horario_a_laborar); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->dias_a_laborar); ?></td>
+                                <td><a href="#" id="postular<?php echo $a; ?>" rfc='<?php echo $empresa->id_rfc; ?>' 
+                                       digito='<?php echo $empresa->digito_verificador; ?>' vacante="<?php echo $empresa->num_vacante; ?>"
+                                       onclick="postularF(this)">Postular</a>
+                                </td>
+                                <td><a href="#openModal" id="ver<?php echo $a; ?>" rfc="<?php echo $empresa->id_rfc; ?>"
+                                       digito="<?php echo $empresa->digito_verificador; ?>" 
+                                       vacante="<?php echo $empresa->num_vacante; ?> 
+                                       " onclick="anclaF(this)">Ver</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div id="openModal" class="modalDialog">
+                <div>
+                    <div style="overflow: auto;" class="modalDialog1">
+                        <a href="#close" title="Close" class="close">X</a>
+                        <h1 align="center">Vacante</h1>
+                        <div id="vacanteDiv">ss</div>
+                    </div>
+                </div>
+            </div>
+            <?php
+            // add at the end of the file after the table
+            echo $this->paginationControl(
+                    // the paginator object
+                    $this->paginator,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                'url' => $this->url('alumno', array('controller' => 'Alumno', 'action' => 'vacantes'))
+                    )
+            );
+            ?>
+        </div>
+    </div>
+</div>
+<script>
+    function edadF(event) {
+        var edad = parseInt(document.getElementById("edad").value);
+        $("#table").load("vacantes #table", {where: "edad BETWEEN " +
+                    (edad + 2) + " AND " + (edad + 2)});
+    }
+    function horarioF() {
+        $("#table").load("vacantes #table", {where: "horario = '" +
+                    document.getElementById("horario").value + "'"});
+    }
+    function sexoF() {
+        $("#table").load("vacantes #table", {where: "sexo = '" +
+                    document.getElementById("sexo").value + "'"});
+    }
+    function sueldoF() {
+        var sueldo = parseInt(document.getElementById("sueldo").value);
+        $("#table").load("vacantes #table", {where: "sueldo BETWEEN " +
+                    sueldo + " AND " + (sueldo + 5000)});
+    }
+    function anclaF(e) {
+        $('#vacanteDiv').html('<div align="center"><img src="http://img.ffffound.com/static-data/assets/6/77443320c6509d6b500e288695ee953502ecbd6d_m.gif"/></div>');
+        $("#vacanteDiv").load("vacanteid", {id_rfc: $(e).attr("rfc"),
+            digito_verificador: $(e).attr("digito"), num_vacante: $(e).attr("vacante")
+        });
+    }
+    function postularF(e) {
+        $.post('vacantes', {id_rfc: $(e).attr("rfc"), num_vacante: $(e).attr("vacante"),
+            digito_verificador: $(e).attr("digito")})
+                .done(function () {
+                    var success = document.getElementById("success");
+                    success.style.display = "block";
+                    setTimeout(function () {
+                        document.getElementById("success").style.display = "none";
+                    }, 2000);
+                })
+                .fail(function (data) {
+                    alert(data);
+                });
+    }
+</script>

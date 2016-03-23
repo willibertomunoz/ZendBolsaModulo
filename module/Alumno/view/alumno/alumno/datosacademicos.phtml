@@ -1,0 +1,30 @@
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
+<div class="inner-content">
+    <div class="panel theme-panel">
+        <div class="alert alert-success" align="center" id="success" style="display: none;">Datos Actializados</div>
+        <?php
+// module/Album/view/album/album/add.phtml:
+        $title = 'Perfil Academico';
+        $this->headTitle($title);
+        ?>
+        <h1 align="center"><?php echo $this->escapeHtml($title); ?></h1>
+        <?php echo $form->getFormulario(); ?>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#dacademicos").submit(function (e) {
+            $.ajax({
+                type: "POST",
+                url: "datosacademicos",
+                data: $("#dacademicos").serialize(), // serializes the form's elements.
+                success: function ()
+                {
+                    var success = document.getElementById("success");
+                    success.style.display = "block";
+                }
+            });
+
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        });
+    });</script>

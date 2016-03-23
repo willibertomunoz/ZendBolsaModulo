@@ -1,0 +1,28 @@
+<script type="text/javascript" src="<?php echo $this->basePath('js/bootstrap-filestyle.min.js');?>"></script>
+<div class="inner-content">
+    <div class="panel theme-panel" align="center">
+        <table class="table table-hover table-striped" style="max-width: 100px;">
+            <thead>
+                <tr>
+                    <th><span>No.</span></th>
+                    <th>Imagen</th>
+                    <th>Url</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php for ($i = 1; $i < 6; $i++) { ?>
+                    <tr>
+                        <td><?php echo $i; ?></td>
+                        <td><img src="/public/../data/img/Admin.png" class="img-circle notification-avatar" width="95" alt="Avatar"></td>
+                        <td>http://www.cuautitlan.unam.mx/</td>
+                        <td><a href="#">Eliminar</a></td>
+                    </tr><?php } ?>
+            </tbody>
+        </table>
+        <input type="file" class="filestyle" data-input="false" accept="image/jpg" data-buttonText="Sube tus imagenes" multiple="">
+    </div>
+</div>
+<script>
+    $(":file").filestyle({input: false,buttonText: "Sube tus imagenes"});
+</script>

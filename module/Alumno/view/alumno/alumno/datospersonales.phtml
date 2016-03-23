@@ -1,0 +1,50 @@
+<script type="text/javascript" src="<?php echo $this->basePath('js/bootstrap-formhelpers-phone.js') ?>"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
+<div class="alert alert-success" align="center" id="success" style="display: none;"><strong>Datos Personales Actualizados</strong></div>
+<div class="alert alert-warning" align="center" id="imagen" style="display: none;"><strong>Foto Actualizada</strong>
+    <br/>La imagen será vista como actualizada despues de que cierre sessión</div>
+<div class="inner-content">
+    <div class="panel theme-panel">
+
+        <?php
+// module/Album/view/album/album/add.phtml:
+        $title = 'Perfil';
+        $this->headTitle($title);
+        ?>
+        <h1 align="center"><?php echo $this->escapeHtml($title); ?>
+            <img src="<?php echo $this->basePath("../data/img/" . $rfc . ".jpg"); ?>" 
+                 width="40" class="img-circle notification-avatar" alt="Avatar"></h1>
+            <?php echo $form->getFormulario(); ?>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#datospersonales").submit(function (e) {
+            var input = document.querySelector('input[type=file]'),
+                    file = input.files[0];
+            if (file.size > 6000000) {
+                alert("Archivo demasiado grande");
+            }
+            else {
+                var formData = new FormData();
+                var d = $("#datospersonales").serializeArray();
+                jQuery.each(d, function (i, field) {
+                    formData.append(field.name, field.value);
+                });
+                formData.append('imagen', file);
+                $.ajax({
+                    type: "POST",
+                    url: "datospersonales",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data)
+                    {
+                        document.getElementById("success").style.display = "block";
+                        document.getElementById("imagen").style.display = "block";
+                    }
+                });
+            }
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        });
+    });</script>

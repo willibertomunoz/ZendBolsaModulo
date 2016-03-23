@@ -1,0 +1,88 @@
+<table class="table table-hover table-striped" align="center">
+    <thead><tr>
+            <th> Datos </th>
+            <th> Detalle </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="alt"><td>Número de Cuenta</td>
+            <td><?php echo $alumno["id_cuenta"] ?></td>
+        </tr>
+        <tr><td>RFC</td>
+            <td> <?php echo $alumno["rfc"] ?>  </td>
+        </tr>
+        <tr class="alt"><td>Nombre</td>
+            <td> <?php echo $alumno["nombre"] ?> </td>
+        </tr>
+        <tr><td>Apellido Paterno</td>
+            <td> <?php echo $alumno["apellido_paterno"] ?> </td>
+        </tr>
+        <tr class="alt"><td>Apellido Materno</td>
+            <td> <?php echo $alumno["apellido_materno"] ?> </td>
+        </tr>
+        <tr><td>Fecha de nacimiento</td>
+            <td> <?php echo $alumno["fecha_nacimiento"] ?> </td>
+        </tr>
+        <tr class="alt"><td>Sexo</td>
+            <td> <?php echo $alumno["sexo"] ?> </td>
+        </tr>
+        <tr><td>Estado Civil</td>
+            <td> <?php echo $alumno["estado_civil"] ?>  </td>
+        </tr>
+        <tr class="alt"><td>Telefono</td>
+            <td><a href="tel:<?php echo $alumno["telefono"] ?>"><?php echo $alumno["telefono"] ?></a> </td>
+        </tr>
+        <tr><td>Celular</td>
+            <td><a href="tel:<?php echo $alumno["celular"] ?>"><?php echo $alumno["celular"] ?></a> </td>
+        </tr>
+        <tr class="alt"><td>E-mail</td>
+            <td><a href="mailto:<?php echo $alumno["email_principal"] ?>"><?php echo $alumno["email_principal"] ?></a> </td>
+        </tr>      
+        <tr class="alt"><td>E-mail alternativo</td>
+            <td><a href="mailto:<?php echo $alumno["email_alternativo"] ?>"><?php echo $alumno["email_alternativo"] ?></a></td>
+        </tr>      
+        <tr><td>Facebook</td>
+            <td><a href="http://www.facebook.com/<?php echo $alumno["facebook"] ?>"><?php echo $alumno["facebook"] ?></a>  </td>
+        </tr>
+        <tr class="alt"><td>Twitter</td>
+            <td> <a href="http://www.twitter.com/<?php echo $alumno["twitter"] ?>"><?php echo $alumno["twitter"] ?></a></td>
+        </tr>                                                      
+        <tr><td>Perfil</td>
+            <td><?php
+                if ($alumno["tipo_perfil"] == 1)
+                    echo "Publico";
+                else {
+                    echo "privado";
+                }
+                ?></td>
+        </tr>
+        <tr class="alt"><td>Status</td>
+            <?php
+            if ($login["status"] == 1) {
+                ?><td>Activo</td><?php } else {
+                ?>
+                <td>Desactivo</td><?php
+            }
+            ?></td> </td>
+        </tr>                                                    
+    </tbody>                                                
+</table>  
+
+<div class="modal-footer"><div align="left" >
+        <button type="button" class="btn btn-default" onclick="autorizarF(this)"
+                rfc="<?php echo $alumno["rfc"] ?>"
+                <?php
+                if ($login["status"] == 1)
+                    echo "disabled";
+                ?>
+                data-dismiss="modal">Activar</button>
+        <button type="button" class="btn btn-default" onclick="rechazarF(this)"
+                rfc="<?php echo $alumno["rfc"] ?>"
+                <?php
+                if ($login["status"] == 0)
+                    echo "disabled";
+                ?>
+                data-dismiss = "modal">Desactivar</button>
+    </div>
+    <button type = "button" class = "btn btn-default" data-dismiss = "modal">Cerrar</button>
+</div>
