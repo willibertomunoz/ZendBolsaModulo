@@ -15,11 +15,8 @@
                         <tr>
                             <th>Empresa</th>
                             <th>Puesto</th>
-                            <th>Sueldo</th>
                             <th>Sexo</th>
-                            <th>Edad</th>
-                            <th>Horario</th>
-                            <th>Dias a laborar</th>
+                            <th>Motivos</th>
                             <th>Detalles</th>
                         </tr>
                     </thead>
@@ -32,11 +29,8 @@
                             <tr>
                                 <td><?php echo $this->escapeHtml($empresa->nombre_comercial); ?></td>
                                 <td><?php echo $this->escapeHtml($empresa->puesto); ?></td>
-                                <td><?php echo $this->escapeHtml($empresa->sueldo); ?></td>
                                 <td><?php echo $this->escapeHtml($empresa->sexo); ?></td>
-                                <td><?php echo $this->escapeHtml($empresa->edad); ?></td>
-                                <td><?php echo $this->escapeHtml($empresa->horario_a_laborar); ?></td>
-                                <td><?php echo $this->escapeHtml($empresa->dias_a_laborar); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->motivos); ?></td>
                                 <td><a href="#" id="ver<?php echo $a; ?>" rfc="<?php echo $empresa->id_rfc; ?>"
                                        digito="<?php echo $empresa->digito_verificador; ?>" 
                                        vacante="<?php echo $empresa->num_vacante; ?> 

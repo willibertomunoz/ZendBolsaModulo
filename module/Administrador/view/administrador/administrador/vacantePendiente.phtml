@@ -1,3 +1,22 @@
+<div class="modal fade" id="vacanteRechazada" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" align="center">Motivos del rechazo</h4>
+            </div>
+            <form id="motivosRechazo" method="post" action="empresa" role="form">
+                <div class="modal-body">
+                    <input type="text" name="motivos" class="form-control" > 
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default" onclick="rechazaF(this)">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="inner-content">
     <div class="panel theme-panel">
         <div class="panel-heading">
@@ -6,7 +25,7 @@
                 Vacantes <i class="fa fa-pencil-square-o"></i>
             </span>
         </div>
-        <div class="alert alert-success" role="alert" id="success" style="display: none;" align="center">Te has postulado correctamente</div>
+        <div class="alert alert-success" role="alert" id="success" style="display: none;" align="center">Se han hecho los cambios</div>
         <div id="table">
 
             <div class="panel-body table-responsive" >
@@ -103,8 +122,8 @@
                 });
     }
     function autorizarF(e) {
-        $.post('vacanteactiva', {id_rfc: $(e).attr("rfc"), digito_verificador: $(e).attr("digito"), 
-            num_vacante:$(e).attr("num_vacante"),status: 1})
+        $.post('vacanteactiva', {id_rfc: $(e).attr("rfc"), digito_verificador: $(e).attr("digito"),
+            num_vacante: $(e).attr("num_vacante"), status: 1})
                 .done(function () {
                     var success = document.getElementById("success");
                     success.style.display = "block";
@@ -117,19 +136,38 @@
                     alert(data);
                 });
     }
-    function rechazarF(e) {
-        $.post('vacanteactiva', {id_rfc: $(e).attr("rfc"), digito_verificador: $(e).attr("digito"), 
-            num_vacante:$(e).attr("num_vacante"),status: 2})
-                .done(function () {
-                    var success = document.getElementById("success");
-                    success.style.display = "block";
-                    setTimeout(function () {
-                        document.getElementById("success").style.display = "none";
+    var rfc = "", digito, num_vacante;
+
+    $(document).ready(function () {
+        $("#motivosRechazo").submit(function (e) {
+            e.preventDefault();
+            var motivos = ($("#motivosRechazo").serialize()).substring(8);
+            if (motivos.length === 0) {
+                alert("Tiene que dar motivos");
+                exit();
+            }
+            $.post('vacanteactiva', {id_rfc: rfc, digito_verificador: digito,
+                num_vacante: num_vacante, motivos: motivos, status: 2})
+                    .done(function () {
+                        $("#vacanteRechazada").modal("hide");
                         $("#table").load("vacantependiente #table");
-                    }, 2000);
-                })
-                .fail(function (data) {
-                    alert(data);
-                });
+                        var success = document.getElementById("success");
+                        success.style.display = "block";
+                        setTimeout(function () {
+                            document.getElementById("success").style.display = "none";
+
+                        }, 2000);
+                    })
+                    .fail(function (data) {
+                        alert(data);
+                    });
+            e.preventDefault();
+        });
+    });
+    function rechazarF(e) {
+        rfc = $(e).attr("rfc");
+        digito = $(e).attr("digito");
+        num_vacante = $(e).attr("num_vacante");
+        $("#vacanteRechazada").modal("show");
     }
 </script>

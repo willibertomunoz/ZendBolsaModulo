@@ -23,7 +23,7 @@ use Zend\Db\ResultSet\ResultSet;
 
 class Vacantes extends TableGateway {
 
-    private $rfc, $digito, $vacante;
+    private $rfc, $digito, $vacante, $ayuda = array();
 
     public function __construct(Adapter $adapter = null, $databaseSchema = null, ResultSet $selectResultPrototype = null) {
         return parent::__construct('vacantes', $adapter, $databaseSchema, $selectResultPrototype);
@@ -34,6 +34,23 @@ class Vacantes extends TableGateway {
                 function($select) {
             $select->join('empresas', 'vacantes.id_rfc = empresas.id_rfc '
                     . 'AND vacantes.digito_verificador = empresas.digito_verificador');
+        });
+        return $rowset->toArray();
+    }
+
+    public function getvacantesAlumno($idcuenta, $carrera) {
+        $this->ayuda[0] = $idcuenta;
+        $this->ayuda[1] = $carrera;
+        $rowset = $this->select(
+                function($select) {
+            $select->join('empresas', 'vacantes.id_rfc = empresas.id_rfc '
+                            . 'AND vacantes.digito_verificador = empresas.digito_verificador')
+                    ->join('interesados', 'interesados.id_rfc=vacantes.id_rfc AND' .
+                            ' interesados.num_vacante=vacantes.num_vacante and interesados.digito_verificador=vacantes.digito_verificador '
+                            , array(), 'left')
+                    ->where(array('interesados.id_cuenta' => $this->ayuda[0],
+                        'vacantes.carrera_principal' => $this->ayuda[1], 'vacantes.status' => 1));
+            $select->where->between("vacantes.fecha_hora_actualizacion", new \Zend\Db\Sql\Expression("NOW() - INTERVAL 3 MONTH"), new \Zend\Db\Sql\Expression("NOW()"));
         });
         return $rowset->toArray();
     }
@@ -67,20 +84,19 @@ class Vacantes extends TableGateway {
         return $row;
     }
 
-    public function getvacantesId($id) {
-//        $id = (int) $id;
-//        $rowset = $this->select(array('carrera_principal' => $id));
-//        $row = $rowset->toArray();
-//        if (!$row) {
-//            throw new \Exception("No hay registros asociados al valor $id");
-//        }
-//        return $row;
+    public function getvacantesId($id, $cuenta) {
         $sql = new Sql\Sql($this->getAdapter());
         $select = $sql->select()
                 ->from(array('vacantes' => $this->table))
                 ->join(array('e' => 'empresas'), 'vacantes.id_rfc = e.id_rfc '
                         . 'AND vacantes.digito_verificador = e.digito_verificador', array('nombre_comercial'))
-                ->where(array('carrera_principal' => $id));
+                ->join('interesados', 'interesados.id_rfc=vacantes.id_rfc AND' .
+                        ' interesados.num_vacante=vacantes.num_vacante and interesados.digito_verificador=vacantes.digito_verificador '
+                        , array(), 'left')
+                ->where(array('vacantes.carrera_principal' => $id, 'vacantes.status' => 1));
+        $select->where->isNull('interesados.id_cuenta')->
+                between("vacantes.fecha_hora_actualizacion", new \Zend\Db\Sql\Expression("NOW() - INTERVAL 3 MONTH"),
+                new \Zend\Db\Sql\Expression("NOW()"));
         $adapter = new DbSelect($select, $sql);
         $paginator = new Paginator($adapter);
         return $paginator;

@@ -7,11 +7,10 @@
  */
 return array(
     'modules' => array(
-        
         'Alumno',
         'Empresa',
         'Administrador',
-        'Inicio',
+        'Inicio'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

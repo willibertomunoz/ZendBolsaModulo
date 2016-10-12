@@ -1,4 +1,5 @@
-<script type="text/javascript" src="<?php echo $this->basePath('js/bootstrap-filestyle.min.js');?>"></script>
+<script type="text/javascript" src="<?php echo $this->basePath('js/bootstrap-filestyle.min.js'); ?>"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script> 
 <div class="inner-content">
     <div class="panel theme-panel" align="center">
         <table class="table table-hover table-striped" style="max-width: 100px;">
@@ -7,22 +8,109 @@
                     <th><span>No.</span></th>
                     <th>Imagen</th>
                     <th>Url</th>
-                    <th>Eliminar</th>
+                    <th>Estatus</th>
                 </tr>
             </thead>
             <tbody>
-                <?php for ($i = 1; $i < 6; $i++) { ?>
+                <?php
+                $a = 0;
+                foreach ($this->paginator as $Imagen) : // <-- change here!  
+                    $a++;
+                    ?>
                     <tr>
-                        <td><?php echo $i; ?></td>
-                        <td><img src="/public/../data/img/Admin.png" class="img-circle notification-avatar" width="95" alt="Avatar"></td>
-                        <td>http://www.cuautitlan.unam.mx/</td>
-                        <td><a href="#">Eliminar</a></td>
-                    </tr><?php } ?>
+                        <td><?php echo $this->escapeHtml($Imagen->id_imagen); ?></td>
+                        <td><img src="<?php echo $this->basePath("/img/" . $Imagen->id_imagen . ".jpg"); ?>" class="img-circle notification-avatar" width="70" height="70" alt="Avatar"></td>
+                        <td><?php echo $Imagen->url; ?></td>
+                        <td><a href="javascript:fnActualizaImagen('<?php echo $Imagen->id_imagen; ?>','<?php echo $Imagen->status; ?>');" ><?php
+                                if ($Imagen->status == 1)
+                                    echo "Activa";
+                                else
+                                    echo "Desactivada";
+                                ?></a></td>
+
+                    </tr>
+            <?php endforeach; ?>
             </tbody>
+            <?php
+            // add at the end of the file after the table
+            echo $this->paginationControl(
+                    // the paginator object
+                    $this->paginator,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                'url' => $this->url('Administrador', array('controller' => 'Administrador', 'action' => 'Imagenes'))
+                    )
+            );
+            ?>
         </table>
-        <input type="file" class="filestyle" data-input="false" accept="image/jpg" data-buttonText="Sube tus imagenes" multiple="">
+        <form action="imagenes" method="post" id="form1" target="Iframepost">
+            <input type="file" class="filestyle" data-input="false" accept="image/jpg" name="imagen" onchange="document.getElementById('submit').click();" 
+                   data-buttonText="Sube tus imagenes"  >
+            <input name="status" type="hidden" value="1">
+            <input name="envia" type="submit" style="display: none;" id="submit">
+        </form>
+        <form id='form2' name='form2' target="Iframepost" method="post">
+            <input name="id_imagen" id="id" type="hidden">
+            <input name="status" id="status" type="hidden">
+            <input name="accion" id="accion" type="hidden">
+        </form>
+        <iframe name="Iframepost" id="Iframepost" style="display:block"></iframe>
     </div>
+
 </div>
 <script>
-    $(":file").filestyle({input: false,buttonText: "Sube tus imagenes"});
+    $(":file").filestyle({input: false, buttonText: "Sube tus imagenes"});
+    $(document).ready(function () {
+        $("#form1").submit(function (e) {
+            var input = document.querySelector('input[type=file]'),
+                    file = input.files[0];
+            if (file.size > 60000000) {
+                alert("Archivo demasiado grande");
+            }
+            else {
+                var formData = new FormData();
+                var d = $("#form1").serializeArray();
+                jQuery.each(d, function (i, field) {
+                    formData.append(field.name, field.value);
+                });
+                formData.append('imagen', file);
+                $.ajax({
+                    type: "POST",
+                    url: "imagenes",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data)
+                    {
+                        alert("Subida con Exito");
+                    }
+                });
+            }
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        });
+    });
+    function fnActualizaImagen(indice, estatus) {
+        if (estatus == "0") {
+            estatus = "1";
+        } else {
+            estatus = "0";
+        }
+        document.getElementById('form2').action = "imagenes";
+        document.getElementById('id').value = indice;
+        document.getElementById('accion').value = "actualiza";
+        document.getElementById('status').value = estatus;
+        document.getElementById('form2').submit();
+        //$('#main-content').html('<div align="center"><img src="https://3.bp.blogspot.com/-9h75EL6NNBY/VMPTo9gq3oI/AAAAAAAAauc/mQ1BbN4iIpQ/s1600/carga%2Bblog%2Benrhedando3.gif"/></div>');
+        
+
+    }
+    function fnrecarga(){
+        
+        $("#main-content").load("imagenes");
+    
+    }
 </script>

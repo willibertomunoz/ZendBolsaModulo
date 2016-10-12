@@ -9,7 +9,7 @@ return array(
      
      'router'=>array(
         'routes'=>array(
-            'Administrado'=>array(
+            'Administrador'=>array(
                  'type'=>'Segment',
                     'options'=>array(
                         

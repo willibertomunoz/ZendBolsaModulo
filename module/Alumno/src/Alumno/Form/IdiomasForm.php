@@ -16,10 +16,10 @@ namespace Alumno\Form;
 
 class IdiomasForm {
 
-    private $action="idiomas", $basico, $intermedio, $avanzado, $hablado, $lectura, $escritura, $escuchado, $certificacion,$adapter;
+    private $action="idiomas",$cuenta, $basico, $intermedio, $avanzado, $hablado, $lectura, $escritura, $escuchado, $certificacion,$adapter;
 
-    public function __construct( $adapter) {
-        
+    public function __construct( $adapter,$cuenta) {
+        $this->cuenta=$cuenta;
         $this->adapter = $adapter;
     
     }
@@ -79,7 +79,7 @@ class IdiomasForm {
     private function getIdioma() {
         $select = "";
         $Idioma = new \Administrador\Model\Idioma($this->adapter);
-        foreach ($Idioma->getIdiomas() as $idioma) {
+        foreach ($Idioma->getIdiomasAlumno($this->cuenta) as $idioma) {
             if ($this->certificacion == $idioma['id_idioma']) {
                 $select = $select . "<option value='" . $idioma['id_estado'] . "' selected>" . $idioma['estado'] . "</option>";
             } else {

@@ -67,7 +67,8 @@ class AlumnoDatosPersonales extends TableGateway {
     public function getAlumnoPaginator() {
         $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
         $select = $sql->select()
-                ->from(array('alumno' => $this->table));
+                ->from(array('alumno' => $this->table))
+                ->order("apellido_paterno");
 //                ->join(array('l' => 'log_in'), 'alumno.rfc = l.id_rfc ', array('status'));
         $adapter = new \Zend\Paginator\Adapter\DbSelect($select, $sql);
         $paginator = new \Zend\Paginator\Paginator($adapter);

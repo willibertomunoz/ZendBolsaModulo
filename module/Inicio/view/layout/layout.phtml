@@ -44,7 +44,7 @@
                              alt="UNAM.mx" />
                     </a>
                     <a href="http://www.cuautitlan.unam.mx/" title="Facultad de Estudios Superiores Cuautitlan" rel="home" >
-                        <img src="http://www.cuautitlan.unam.mx/imgs/stock/rotate.php" style="width: 50%; float: right;"
+                        <img src="<?php echo $this->basePath("/img/cuautitlan.png"); ?>" style="width: 13%; float: right;"
                              alt="FES Cuautitlán" height="80"/>
                     </a>
                     <div class="fecha" align="right" style="width: 100%;">    
@@ -89,7 +89,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="<?php
                                     echo $this->url('inicio', array(
-//                                        'controller' => 'index',
+                                        'controller' => 'index',
                                         'action' => 'mision'))
                                     ?>">Mision</a></li>
                                 <li><a href="">Vision</a></li>

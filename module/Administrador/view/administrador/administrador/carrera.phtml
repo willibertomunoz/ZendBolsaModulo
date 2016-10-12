@@ -35,11 +35,10 @@
                                     else
                                         echo 'Desactivada';
                                     ?></td>
-
-
-                                <td><a href="#" id="ver<?php echo $a; ?>" carrera="<?php echo $carrera->id_carrera; ?>"
-                                       status="<?php echo $carrera->status; ?>"
-                                       onclick="anclaF(this)">Ver</a>
+                                <td><a href="#" id_carrera="<?php echo $carrera->id_carrera; ?>"
+                                       status="<?php echo $carrera->status; ?>" carrera="<?php echo $carrera->carrera; ?>" 
+                                       semestres="<?php echo $carrera->semestres_totales; ?>"
+                                       onclick="anclaF(this)">Editar</a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -50,25 +49,7 @@
                     echo"<h1 align='center'>No hay empresas por validar</h1>";
                 ?>
             </div>
-            <div class="modal fade" id="myModal" role="dialog">
-                <div class="modal-dialog modal-sm">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title" align="center">Carrera</h4>
-                        </div>
-                        <div class="modal-body" id="bodymodal">
-                            <input type="number" name="digito" class="form-control" > 
-                        </div>
-                        <div class="modal-footer"><div align="left" id="footer" >
-                                
-                            </div>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+            <input value="AGREGAR" type="button" onclick="fnNuevo();" class="btn btn-default">
             <?php
             // add at the end of the file after the table
             echo $this->paginationControl(
@@ -84,49 +65,82 @@
                     )
             );
             ?>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Carrera</h4>
+                        </div>
+                        <div class="modal-body" id="bodymodal" align="center">
+                            <form name="form1" id="form1" action="carrera" target="iframeAux" method="post">
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Nº Carrera</span>
+                                    <input name="id_carrera" id="id_carrera" type="number" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Carrera</span>
+                                    <input name="carrera" id="carrera_text" type="text" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Semestres</span>
+                                    <input name="semestres_totales" id="semestres" type="text" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <select name="status" id="status" class="form-control">
+                                        <option value="1">Activa</option>
+                                        <option value="0">DesActivada</option> 
+                                    </select>
+
+                                </div>
+                                <input name="accion" id="accion" type="hidden">
+                            </form>
+
+                        </div>
+                        <div class="modal-footer"><div align="left" id="footer" ></div>
+                            <div align="center" id="footer" ><input value="Actualiza" type="button" onclick="fnSubmit();" class="btn btn-default"> </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <iframe name="iframeAux" id="iframeAux" style="display: block;"></iframe>
+
+
 </div>
 <script>
     function anclaF(e) {
         $("#myModal").modal("show");
-        $('#bodymodal').html('<div align="center"><img src="http://img.ffffound.com/static-data/assets/6/77443320c6509d6b500e288695ee953502ecbd6d_m.gif"/></div>');
-        if ($(e).attr("status") === "1") {
-            $("#footer").html('<button type="button" class="btn btn-default" onclick="autorizarF(this)" disabled data-dismiss="modal">Autorizar</button><button type="button" class="btn btn-default" onclick="rechazarF(this)" data-dismiss="modal">Rechazar</button>');
-        } 
-        else if ($(e).attr("status") === "0") {
-            $("#footer").html('<button type="button" class="btn btn-default" onclick="autorizarF(this)"  data-dismiss="modal">Autorizar</button>'
-                    + '<button type="button" class="btn btn-default" onclick="rechazarF(this)" disabled data-dismiss="modal">Rechazar</button>');
+        document.getElementById("id_carrera").value = $(e).attr("id_carrera");
+        document.getElementById("carrera_text").value = $(e).attr("carrera");
+        document.getElementById("semestres").value = $(e).attr("semestres");
+        document.getElementById("status").value = $(e).attr("status");
+        document.getElementById("accion").value = "actualiza";
+
+    }
+    function fnSubmit() {
+        if (document.getElementById("id_carrera").value != ""){
+            document.getElementById("form1").submit();
+            $("#myModal").modal("hide");
         }
+        else
+            alert("No hay numero de carrera");
     }
-    function autorizarF(e) {
-        $.post('empresaactivas', {id_rfc: $(e).attr("rfc"), digito_verificador: $(e).attr("digito"), autorizacion: 1})
-                .done(function () {
-                    var success = document.getElementById("success");
-                    success.style.display = "block";
-                    setTimeout(function () {
-                        $('#success').html('Empresa Autorizada');
-                        document.getElementById("success").style.display = "none";
-                        $("#table").load("empresapendiente #table");
-                    }, 2000);
-                })
-                .fail(function (data) {
-                    alert(data);
-                });
+    function fnNuevo() {
+        $("#myModal").modal("show");
+        document.getElementById("id_carrera").value = "";
+        document.getElementById("carrera_text").value = "";
+        document.getElementById("semestres").value = "";
+        document.getElementById("status").value = "";
+        document.getElementById("accion").value = "";
+
     }
-    function rechazarF(e) {
-        $.post('empresaactivas', {id_rfc: $(e).attr("rfc"), digito_verificador: $(e).attr("digito"), autorizacion: 2})
-                .done(function () {
-                    var success = document.getElementById("success");
-                    success.style.display = "block";
-                    setTimeout(function () {
-                        $('#success').html('Empresa Rechazada');
-                        document.getElementById("success").style.display = "none";
-                        $("#table").load("empresapendiente #table");
-                    }, 2000);
-                })
-                .fail(function (data) {
-                    alert(data);
-                });
+    function fnrecarga(){
+        
+        $("#main-content").load("carrera");
+    
     }
 </script>

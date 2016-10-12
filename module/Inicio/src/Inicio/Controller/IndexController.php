@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Zend Framework (http://framework.zend.com/)
  *
@@ -65,7 +66,7 @@ class IndexController extends AbstractActionController {
         $identi = $auth->getStorage()->read();
         $modal = NULL;
         if (!is_null($usuario->id) && $identi->status == 1) {
-            $this->redirigir($identi->tipo_usuario,$identi->status);
+            $this->redirigir($identi->tipo_usuario, $identi->status);
         }
         //DbAdapter
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
@@ -139,22 +140,26 @@ class IndexController extends AbstractActionController {
     }
 
     private function redirigir($usuario, $status) {
+        $auth = $this->auth;
+        $identi = $auth->getStorage()->read();
         if ($status == 0) {
             $this->flashMessenger()->addMessage("Usuario esta dada de baja, contacte al administrador");
             return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/login');
-        }else
-        switch ($usuario) {
-            case 1:
-                //Nos redirige a una pagina interior
-                return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Alumno/');
-                break;
-            case 2:
-                return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Administrador/');
-                break;
-            case 3:
-                return true;
-                break;
-        }
+        } else
+            switch ($usuario) {
+                case 1:
+                    //Nos redirige a una pagina interior
+                    //$this->registrarIngreso($identi->digito_verificador, $identi->rfc);
+                    return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Alumno/');
+                    break;
+                case 2:
+//                     $this->registrarIngreso($identi->digito_verificador, $identi->rfc);
+                    return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Administrador/');
+                    break;
+                case 3:
+                    return true;
+                    break;
+            }
     }
 
     public function empresaAction() {
@@ -163,12 +168,19 @@ class IndexController extends AbstractActionController {
         $auth = $this->auth;
         $identi = $auth->getStorage()->read();
         if ($identi->digito_verificador == $post["digito"]) {
+             $this->registrarIngreso($identi->digito_verificador, $identi->rfc);
             return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Empresa/');
         } else {
             $this->flashMessenger()->addMessage("Numero Verificador erroneo, intentalo de nuevo");
             return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/login');
         }
         $view->setTerminal(true);
+    }
+
+    public function registrarIngreso($digito,$rfc) {
+        $ingresos = new \Administrador\Model\Ingresos($this->dbAdapter);
+        $ingresos->addIngresos(array('digito_verificador' => $digito, 'id_rfc' => $this->getRequest()->getPost("id_rfc"),
+            'fecha_hora_ingreso' => new \Zend\Db\Sql\Expression("NOW()")));
     }
 
 }

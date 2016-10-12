@@ -35,7 +35,12 @@ class AdministradorController extends AbstractActionController {
             $this->layout->script = $this->usuario->script;
 //            $this->usuario->script = NULL;
         }
-        return new ViewModel();
+        $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+        $ingresos = new \Administrador\Model\Ingresos($this->dbAdapter);
+        $ingresos = $ingresos->getInformacionIndex();
+        return new ViewModel(array(
+            'ingresos' => $ingresos
+        ));
     }
 
     public function empresaPendienteAction() {
@@ -64,7 +69,7 @@ class AdministradorController extends AbstractActionController {
         $this->verfica("empresarechazada");
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
         $alumno = new \Administrador\Model\Empresa($this->dbAdapter);
-        $where = "autorizacion =2";
+        $where = "autorizacion =2 ";
         $paginator = $alumno->getEmpresaWhere($where);
         // set the current page to what has been passed in query string, or to 1 if none set
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
@@ -104,7 +109,7 @@ class AdministradorController extends AbstractActionController {
         $this->verfica("vacantependiente");
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
         $vacantes = new \Administrador\Model\Vacantes($this->dbAdapter);
-        $paginator = $vacantes->getvacantesIdwhere("status=0");
+        $paginator = $vacantes->getvacantesIdwhere("status=0 AND fecha_hora_actualizacion> NOW()- interval 3 month");
         // set the current page to what has been passed in query string, or to 1 if none set
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         // set the number of items per page to 8
@@ -121,7 +126,7 @@ class AdministradorController extends AbstractActionController {
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
         $vacantes = new \Administrador\Model\Vacantes($this->dbAdapter);
 
-        $paginator = $vacantes->getvacantesIdwhere("status=2");
+        $paginator = $vacantes->getvacantesIdwhere("status=2 AND fecha_hora_actualizacion> NOW()- interval 3 month");
         // set the current page to what has been passed in query string, or to 1 if none set
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         // set the number of items per page to 8
@@ -141,7 +146,7 @@ class AdministradorController extends AbstractActionController {
             $post = $this->getRequest()->getPost()->toArray();
             $vacantes->updatevacante($post["id_rfc"], $post["digito_verificador"], $post["num_vacante"], $post);
         }
-        $paginator = $vacantes->getvacantesIdwhere("status=1");
+        $paginator = $vacantes->getvacantesIdwhere("status=1 AND fecha_hora_actualizacion> NOW()- interval 3 month");
         // set the current page to what has been passed in query string, or to 1 if none set
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         // set the number of items per page to 8
@@ -161,8 +166,8 @@ class AdministradorController extends AbstractActionController {
             $login_alumno = new \Administrador\Model\LogIn($this->dbAdapter);
             $login_alumno->updateLogin($post["id_rfc"], "", $post);
         }
-        $vacantes = new \Administrador\Model\Alumno\AlumnoDatosPersonales($this->dbAdapter);
-        $paginator = $vacantes->getAlumnoPaginator();
+        $alumno = new \Alumno\Model\AlumnoDatosPersonales($this->dbAdapter);
+        $paginator = $alumno->getAlumnoPaginator();
         // set the current page to what has been passed in query string, or to 1 if none set
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
         // set the number of items per page to 8
@@ -176,18 +181,69 @@ class AdministradorController extends AbstractActionController {
 
     public function imagenesAction() {
         $this->verfica("imagenes");
-        $view = new ViewModel();
-        $view->setTerminal(true);
-        return $view;
+        $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+        if ($this->getRequest()->isPost()) {
+            $request = $this->getRequest();
+            $post = array_merge_recursive(
+                    $request->getPost()->toArray(), $request->getFiles()->toArray()
+            );
+
+            $imagenesClass = new \Administrador\Model\Imagenes($this->dbAdapter);
+            if ($post["accion"] == "actualiza") {
+                unset($post["accion"]);
+                echo '<script>parent.fnrecarga();</script>';
+                $imagenesClass->updateImagenes($post["id_imagen"], $post);
+                echo '<script>parent.fnrecarga();</script>';
+                $view = new ViewModel();
+                $view->setTerminal(false);
+                exit();
+            } else {
+                $imagen = $post["imagen"];
+                unset($post["imagen"]);
+
+                $imagenesClass->addImagenes($post);
+                $Nimagen = $imagenesClass->lastImagen();
+                $Nimagen = $Nimagen["Nimagen"];
+                $filter = new \Zend\Filter\File\Rename(
+                        array(
+                    "source" => $imagen,
+                    "target" => "./public/img/$Nimagen.jpg",
+                    "overwrite" => true,
+                ));
+                echo $filter->filter($imagen);
+            }
+            return true;
+        } else {
+            $imagenes = new \Administrador\Model\Imagenes($this->dbAdapter);
+            $paginator = $imagenes->getImagenPaginator();
+            // set the current page to what has been passed in query string, or to 1 if none set
+            $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+            // set the number of items per page to 8
+            $paginator->setItemCountPerPage(5);
+            $view = new ViewModel(array(
+                'paginator' => $paginator
+            ));
+            $view->setTerminal(true);
+            return $view;
+        }
     }
 
     public function carreraAction() {
         $this->verfica("carrera");
+        //$form = new \Administrador\Form\CarreraForm();
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
         if ($this->getRequest()->isPost()) {
             $post = $this->getRequest()->getPost()->toArray();
-            $login_alumno = new \Administrador\Model\LogIn($this->dbAdapter);
-            $login_alumno->updateLogin($post["id_rfc"], "", $post);
+            
+            $carrera = new \Administrador\Model\Carrera($this->dbAdapter);
+            $accion = $post["accion"];
+            unset($post["accion"]);
+            if ($accion == "actualiza") {
+                $carrera->updateCarrera($post["id_carrera"], $post);
+            } else {
+                $carrera->addCarrera($post);
+            }
+            echo "<script>parent.fnrecarga();</script>";
         }
         $carrera = new \Administrador\Model\Carrera($this->dbAdapter);
         $paginator = $carrera->getcarreraPaginator();
@@ -274,7 +330,7 @@ class AdministradorController extends AbstractActionController {
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
         if ($this->getRequest()->isPost()) {
             $post = $this->getRequest()->getPost()->toArray();
-            $alumno = new \Administrador\Model\Alumno\AlumnoDatosPersonales($this->dbAdapter);
+            $alumno = new \Alumno\Model\AlumnoDatosPersonales($this->dbAdapter);
             $alum = $alumno->getAlumnoCuenta($post["id_cuenta"]);
             $login = new \Administrador\Model\LogIn($this->dbAdapter);
             $log = $login->getLoginId($post["rfc"], "");
@@ -299,7 +355,7 @@ class AdministradorController extends AbstractActionController {
         if ($this->getRequest()->isGet() && !$this->getRequest()->isXmlHttpRequest()) {
             if (is_null($this->usuario->script)) {
                 $this->usuario->script = '$("#main-content").load("' . $url . '");'
-                        . 'history.pushState(null, null, "'.$url.'");';
+                        . 'history.pushState(null, null, "' . $url . '");';
                 return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Administrador/');
             } else {
                 $this->usuario->script = NULL;

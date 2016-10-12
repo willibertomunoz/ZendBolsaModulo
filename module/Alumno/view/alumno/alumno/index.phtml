@@ -9,19 +9,20 @@
             <div class="row clearfix">
                 <?php
                 $a = 0;
-                foreach ($this->vacantes as $empresa): // <-- change here!  
+                foreach ($this->vacantes as $vacante): // <-- change here!  
                     $a++;
                     ?>
-                    <div class="col-md-3 column">
-                        <a href="#" id="ver<?php echo $a ?>" rfc="<?php echo $empresa["id_rfc"]?>"
-                           digito="<?php echo $empresa["digito_verificador"]?>" vacante="<?php echo $empresa["num_vacante"]?>">
-                            <div class="feature-box">
+                    <a href="#" id="ver<?php echo $a ?>" rfc="<?php echo $vacante["id_rfc"] ?>"
+                       digito="<?php echo $vacante["digito_verificador"] ?>" vacante="<?php echo $vacante["num_vacante"] ?>">
+
+                        <div class="col-md-3 column" >
+                            <div class="feature-box" style="height:180px;">
                                 <span class="feature-icon"><i class="fa fa-newspaper-o"></i></span></br>
-                                <span><?php echo $empresa["nombre_comercial"]; ?></span>
-                                <h4><strong>Solicita <br/><?php echo $empresa["puesto"]; ?></strong></h4>
+                                <span><?php echo $vacante["nombre_comercial"]; ?></span>
+                                <h4><strong>Solicita <br/><?php echo $vacante["puesto"]; ?></strong></h4>
                             </div>
-                        </a>
-                    </div>
+
+                        </div></a>
                     <?php if ($a / 4 == 0 && $a > 3 || $a / 4 == 2 && $a > 7) { ?>
                     </div>
                     <div class="row clearfix">

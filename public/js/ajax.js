@@ -62,7 +62,7 @@ jQuery(function ($) {
     function cargar()
     {
         tiempolim = setTimeout(cambiar, 900000);
-        $('#main-content').html('<div align="center"><img src="http://img.ffffound.com/static-data/assets/6/77443320c6509d6b500e288695ee953502ecbd6d_m.gif"/></div>');
+        $('#main-content').html('<div align="center"><img src="../img/loading.gif"/></div>');
     }
     
 //   $("#paginator").on('click', function (event) {

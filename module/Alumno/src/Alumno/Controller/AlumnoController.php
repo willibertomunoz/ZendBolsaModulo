@@ -47,7 +47,7 @@ class AlumnoController extends AbstractActionController {
         $layout->carrera = $this->alumno->getAtributo("carrera");
         $layout->rfc = $this->datos->id_rfc;
         $v = new Vacantes($this->dbAdapter);
-        $vac = $v->getvacantes();
+        $vac = $v->getvacantesAlumno($this->alumno->getAtributo("id_cuenta"),$this->alumno->getAtributo("id_carrera"));
         $view = new ViewModel(array(
             'vacantes' => $vac,
         ));
@@ -85,7 +85,7 @@ class AlumnoController extends AbstractActionController {
             }
         } else {
             $vacantes = new Vacantes($this->dbAdapter);
-            $paginator = $vacantes->getvacantesId($this->alumno->getAtributo("id_carrera"));
+            $paginator = $vacantes->getvacantesId($this->alumno->getAtributo("id_carrera"),  $this->alumno->id_cuenta);
         }
         // set the current page to what has been passed in query string, or to 1 if none set
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
@@ -132,7 +132,7 @@ class AlumnoController extends AbstractActionController {
             $request = $this->getRequest();
             // Make certain to merge the files info!
             $post = array_merge_recursive(
-                    $request->getPost()->toArray(), $request->getFiles()->toArray()
+                    $request->getPost()->toArray(), $request->getFiles()
             );
             $rfc = $this->datos->id_rfc;
             $imagen = $post["imagen"];
@@ -230,7 +230,7 @@ class AlumnoController extends AbstractActionController {
         $paginator = $this->alumno->getIdiomas();
         $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 8));
         $paginator->setItemCountPerPage(8);
-        $form = new \Alumno\Form\IdiomasForm($this->dbAdapter);
+        $form = new \Alumno\Form\IdiomasForm($this->dbAdapter,$this->alumno->id_cuenta);
         $view = new ViewModel(array(
             'paginator' => $paginator,
             'form' => $form
