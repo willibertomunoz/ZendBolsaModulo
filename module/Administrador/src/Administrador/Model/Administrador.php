@@ -31,7 +31,7 @@ class Administrador extends TableGateway {
     public function getAdministradorId($id)
      {
         $id  = (int) $id;
-        $rowset = $this->select(array('id_carrera' => $id));
+        $rowset = $this->select(array('id_rfc' => $id));
         $row = $rowset->current();
         
         if (!$row) {
@@ -47,11 +47,21 @@ class Administrador extends TableGateway {
     public function updateAdministrador($id, $data=array())
     {
         
-        $this->update($data, array('id_carrera' => $id));
+        $this->update($data, array('id_rfc' => $id));
     }
 
     public function deleteAdministrador($id)
     {
-        $this->delete(array('id_carrera' => $id));
+        $this->delete(array('id_rfc' => $id));
+    }
+    public function getAdministradorPaginator() {
+        $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
+        $select = $sql->select()
+                ->from(array('administradores' => $this->table));
+//                ->join(array('l' => 'log_in'), 'alumno.rfc = l.id_rfc ', array('status'));
+        $adapter = new \Zend\Paginator\Adapter\DbSelect($select, $sql);
+        $paginator = new \Zend\Paginator\Paginator($adapter);
+        return $paginator;
+        
     }
 }

@@ -5,8 +5,10 @@
  */
 var tiempolim;
 function parar() {
+    tiempolim=0;
     clearTimeout(tiempolim);
     tiempolim = setTimeout(cambiar, 900000); // 5 segundos
+    alert(tiempolim);
 }
 function cambiar() {
     setTimeout('location="cerrar"', 0);

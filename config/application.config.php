@@ -10,7 +10,8 @@ return array(
         'Alumno',
         'Empresa',
         'Administrador',
-        'Inicio'
+        'Inicio',        
+        'DOMPDFModule',
     ),
     'module_listener_options' => array(
         'module_paths' => array(

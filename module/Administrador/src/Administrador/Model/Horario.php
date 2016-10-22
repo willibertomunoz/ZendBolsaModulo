@@ -54,4 +54,14 @@ class Horario extends TableGateway {
     {
         $this->delete(array('id_horario' => $id));
     }
+    public function getHorarioPaginator() {
+        $sql = new \Zend\Db\Sql\Sql($this->getAdapter());
+        $select = $sql->select()
+                ->from(array('catalogo_horario_laboral' => $this->table));
+//                ->join(array('l' => 'log_in'), 'alumno.rfc = l.id_rfc ', array('status'));
+        $adapter = new \Zend\Paginator\Adapter\DbSelect($select, $sql);
+        $paginator = new \Zend\Paginator\Paginator($adapter);
+        return $paginator;
+        
+    }
 }

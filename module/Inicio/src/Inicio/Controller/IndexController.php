@@ -145,21 +145,22 @@ class IndexController extends AbstractActionController {
         if ($status == 0) {
             $this->flashMessenger()->addMessage("Usuario esta dada de baja, contacte al administrador");
             return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/login');
-        } else
+        } else {
             switch ($usuario) {
                 case 1:
                     //Nos redirige a una pagina interior
-                    //$this->registrarIngreso($identi->digito_verificador, $identi->rfc);
+                    $this->registrarIngreso($identi->digito_verificador, $identi->id_rfc);
                     return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Alumno/');
                     break;
                 case 2:
-//                     $this->registrarIngreso($identi->digito_verificador, $identi->rfc);
+                    $this->registrarIngreso($identi->digito_verificador, $identi->id_rfc);
                     return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Administrador/');
                     break;
                 case 3:
                     return true;
                     break;
             }
+        }
     }
 
     public function empresaAction() {
@@ -168,7 +169,7 @@ class IndexController extends AbstractActionController {
         $auth = $this->auth;
         $identi = $auth->getStorage()->read();
         if ($identi->digito_verificador == $post["digito"]) {
-             $this->registrarIngreso($identi->digito_verificador, $identi->rfc);
+             $this->registrarIngreso($identi->digito_verificador, $identi->id_rfc);
             return $this->redirect()->toUrl($this->getRequest()->getBaseUrl() . '/Empresa/');
         } else {
             $this->flashMessenger()->addMessage("Numero Verificador erroneo, intentalo de nuevo");
@@ -178,8 +179,8 @@ class IndexController extends AbstractActionController {
     }
 
     public function registrarIngreso($digito,$rfc) {
-        $ingresos = new \Administrador\Model\Ingresos($this->dbAdapter);
-        $ingresos->addIngresos(array('digito_verificador' => $digito, 'id_rfc' => $this->getRequest()->getPost("id_rfc"),
+        $ingresos = new \Administrador\Model\Ingresos($this->getServiceLocator()->get('Zend\Db\Adapter'));
+        $ingresos->addIngresos(array('digito_verificador' => $digito, 'id_rfc' => $rfc,
             'fecha_hora_ingreso' => new \Zend\Db\Sql\Expression("NOW()")));
     }
 

@@ -26,7 +26,7 @@ class Ingresos extends TableGateway {
     public function __construct(Adapter $adapter = null, $databaseSchema = null, ResultSet $selectResultPrototype = null) {
 
         return parent::__construct('ingresos', $adapter, $databaseSchema, $selectResultPrototype);
-        $this->adapter = $adapter;
+        
     }
 
     public function getIngresos() {

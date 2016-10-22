@@ -1,4 +1,122 @@
 <div class="inner-content">
     <div class="panel theme-panel">
+        <div class="panel-heading">
+
+            <span class="panel-title">
+                Carrera<i class="fa fa-pencil-square-o"></i>
+            </span>
+        </div>
+        <div class="alert alert-success" role="alert" id="success" style="display: none;" align="center">Empresa activada</div>
+        <div id="table">
+
+            <div class="panel-body table-responsive" >
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>No Idioma</th>
+                            <th>Idioma</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $a = 0;
+                        foreach ($this->paginator as $idioma) : // <-- change here!  
+                            $a++;
+                            ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($idioma->id_idioma); ?></td>
+                                <td><?php echo $this->escapeHtml($idioma->idioma); ?></td>
+                                <td><a href="#" id_idioma="<?php echo $idioma->id_idioma; ?>"
+                                       idioma="<?php echo $idioma->idioma; ?>" onclick="anclaF(this)">Editar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php
+                if ($this->paginator->count() == 0)
+                    echo"<h1 align='center'>No hay empresas por validar</h1>";
+                ?>
+            </div>
+            <input value="AGREGAR" type="button" onclick="fnNuevo();" class="btn btn-default">
+            <?php
+            // add at the end of the file after the table
+            echo $this->paginationControl(
+                    // the paginator object
+                    $this->paginator,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                'url' => $this->url('Administrador', array('controller' => 'Administrador', 'action' => 'idiomas'))
+                    )
+            );
+            ?>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Carrera</h4>
+                        </div>
+                        <div class="modal-body" id="bodymodal" align="center">
+                            <form name="form1" id="form1" action="idiomas" target="iframeAux" method="post">
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Nº Idioma</span>
+                                    <input name="id_idioma" id="id_idioma" type="text" class="form-control" readonly="true" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Idioma</span>
+                                    <input name="idioma" id="idioma_text" type="text" class="form-control" required>
+                                </div>
+                                <input name="accion" id="accion" type="hidden">
+                            </form>
+
+                        </div>
+                        <div class="modal-footer"><div align="left" id="footer" ></div>
+                            <div align="center" id="footer" ><input value="Actualiza" type="button" onclick="fnSubmit();" class="btn btn-default"> </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <iframe name="iframeAux" id="iframeAux" style="display: none;"></iframe>
+
+
 </div>
+<script>
+    function anclaF(e) {
+        $("#myModal").modal("show");
+        document.getElementById("id_idioma").value = $(e).attr("id_idioma");
+        document.getElementById("idioma_text").value = $(e).attr("idioma");
+        document.getElementById("accion").value = "actualiza";
+
+    }
+    function fnSubmit() {
+        if (document.getElementById("id_idioma").value != "") {
+            document.getElementById("form1").submit();
+            $("#myModal").modal("hide");
+        }
+        else
+            alert("No hay numero de idioma");
+    }
+    function fnNuevo() {
+        $("#myModal").modal("show");
+        document.getElementById("id_idioma").value = "";
+        document.getElementById("idioma_text").value = "";
+        document.getElementById("semestres").value = "";
+        document.getElementById("status").value = "";
+        document.getElementById("accion").value = "";
+
+    }
+    function fnrecarga() {
+
+        $("#main-content").load("idiomas");
+
+    }
+</script>

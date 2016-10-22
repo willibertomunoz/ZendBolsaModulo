@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 //Componentes de autenticación
 use Zend\Authentication\AuthenticationService;
 use Zend\Session\Container;
+use DOMPDFModule\View\Model\PdfModel;
 
 class AdministradorController extends AbstractActionController {
 
@@ -234,7 +235,7 @@ class AdministradorController extends AbstractActionController {
         $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
         if ($this->getRequest()->isPost()) {
             $post = $this->getRequest()->getPost()->toArray();
-            
+
             $carrera = new \Administrador\Model\Carrera($this->dbAdapter);
             $accion = $post["accion"];
             unset($post["accion"]);
@@ -254,20 +255,65 @@ class AdministradorController extends AbstractActionController {
         $view = new ViewModel(array(
             'paginator' => $paginator
         ));
+
         $view->setTerminal(true);
         return $view;
     }
 
     public function idiomasAction() {
         $this->verfica("idiomas");
-        $view = new ViewModel();
+        $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+        if ($this->getRequest()->isPost()) {
+            $post = $this->getRequest()->getPost()->toArray();
+
+            $idioma = new \Administrador\Model\Idioma($this->dbAdapter);
+            $accion = $post["accion"];
+            unset($post["accion"]);
+            if ($accion == "actualiza") {
+                $idioma->updateIdioma($post["id_idioma"], $post);
+            } else {
+                $idioma->addIdioma($post);
+            }
+            echo "<script>parent.fnrecarga();</script>";
+        }
+        $idioma = new \Administrador\Model\Idioma($this->dbAdapter);
+        $paginator = $idioma->getIdiomaPaginator();
+        // set the current page to what has been passed in query string, or to 1 if none set
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+        // set the number of items per page to 8
+        $paginator->setItemCountPerPage(8);
+        $view = new ViewModel(array(
+            'paginator' => $paginator
+        ));
         $view->setTerminal(true);
         return $view;
     }
 
     public function horarioAction() {
         $this->verfica("horario");
-        $view = new ViewModel();
+        $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+        if ($this->getRequest()->isPost()) {
+            $post = $this->getRequest()->getPost()->toArray();
+
+            $horario = new \Administrador\Model\Horario($this->dbAdapter);
+            $accion = $post["accion"];
+            unset($post["accion"]);
+            if ($accion == "actualiza") {
+                $horario->updateHorario($post["id_horario"], $post);
+            } else {
+                $horario->addHorario($post);
+            }
+            echo "<script>parent.fnrecarga();</script>";
+        }
+        $horario = new \Administrador\Model\Horario($this->dbAdapter);
+        $paginator = $horario->getHorarioPaginator();
+        // set the current page to what has been passed in query string, or to 1 if none set
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+        // set the number of items per page to 8
+        $paginator->setItemCountPerPage(8);
+        $view = new ViewModel(array(
+            'paginator' => $paginator
+        ));
         $view->setTerminal(true);
         return $view;
     }
@@ -277,7 +323,31 @@ class AdministradorController extends AbstractActionController {
 //    }
     public function mostrarAction() {
         $this->verfica("mostrar");
-        $view = new ViewModel();
+        $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+        if ($this->getRequest()->isPost()) {
+            $post = $this->getRequest()->getPost()->toArray();
+
+            $administrador = new \Administrador\Model\Administrador($this->dbAdapter);
+            $accion = $post["accion"];
+            unset($post["accion"]);
+            if ($accion == "actualiza") {
+                $administrador->updateAdministrador($post["id_rfc"], $post);
+            } else if ($accion == "borra") {
+                
+            } else {
+                $administrador->addAdministrador($post);
+            }
+            echo "<script>parent.fnrecarga();</script>";
+        }
+        $administrador = new \Administrador\Model\Administrador($this->dbAdapter);
+        $paginator = $administrador->getAdministradorPaginator();
+        // set the current page to what has been passed in query string, or to 1 if none set
+        $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
+        // set the number of items per page to 8
+        $paginator->setItemCountPerPage(8);
+        $view = new ViewModel(array(
+            'paginator' => $paginator
+        ));
         $view->setTerminal(true);
         return $view;
     }
@@ -289,10 +359,27 @@ class AdministradorController extends AbstractActionController {
 //        $view = new ViewModel();        $view->setTerminal(true);        return $view;
 //    }
     public function reportesAction() {
-        $this->verfica("reportes");
-        $view = new ViewModel();
+        //$this->verfica("reportes");
+        $pdf = new PdfModel();
+        $pdf->setOption('filename', 'monthly-report'); // Triggers PDF download, automatically appends ".pdf"
+        $pdf->setOption('paperSize', 'a4'); // Defaults to "8x11"
+        $pdf->setOption('paperOrientation', 'portrait'); // Defaults to "portrait"
+        // To set view variables
+        $this->dbAdapter = $this->getServiceLocator()->get('Zend\Db\Adapter');
+        $alumno = new \Alumno\Model\AlumnoDatosPersonales($this->dbAdapter);
+        $alumno = $alumno->getAlumnoPaginator();
+        $alumno->setItemCountPerPage(1000);
+        $pdf->setVariables(array(
+            'message' => 'Hello',
+            'alumnoP'=> $alumno
+        ));
+        $pdf->setOption('isRemoteEnabled', true);
+        $pdf->setOption('isHtml5ParserEnabled', true);
+        $view = new ViewModel(array(
+            'alumno' => $pdf,'alumnoP'=> $alumno
+        ));
         $view->setTerminal(true);
-        return $view;
+        return $pdf;
     }
 
     public function empresaidAction() {
@@ -363,6 +450,19 @@ class AdministradorController extends AbstractActionController {
         } else {
             $this->usuario->script = NULL;
         }
+    }
+
+    public function monthlyReportPdfAction() {
+        $pdf = new PdfModel();
+        //$pdf->setOption('filename', 'monthly-report'); // Triggers PDF download, automatically appends ".pdf"
+        $pdf->setOption('paperSize', 'a4'); // Defaults to "8x11"
+        $pdf->setOption('paperOrientation', 'landscape'); // Defaults to "portrait"
+        // To set view variables
+        $pdf->setVariables(array(
+            'message' => 'Hello'
+        ));
+
+        return $pdf;
     }
 
 }

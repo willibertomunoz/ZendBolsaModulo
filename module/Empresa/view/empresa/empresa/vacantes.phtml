@@ -1,0 +1,245 @@
+<div class="inner-content">
+    <div class="panel theme-panel">
+        <div class="panel-heading">
+
+            <span class="panel-title">
+                Vacantes <i class="fa fa-pencil-square-o"></i>
+                </label>
+        </div>
+        <!--        <form method="post"  role="form" id="direccionform">        
+                    <div class="input-group form-group form-inline">
+                        <span class="input-group-addon" id="basic-addon1">Edad</label>
+                        <select name="edad" class="form-control" id="edad" onchange="edadF()">
+                            <option>...</option>
+                            <option value='21'>18 - 23 años</option>
+                            <option value='26'>24 - 28 años</option>
+                            <option value='31'>29 - 33 años</option>
+                            <option value='26'>34 - 38 años</option>
+                            <option value='41'>39 - 43 años</option>
+                            <option value='46'>43 - o más años</option>
+                        </select>          
+                        <span class="input-group-addon">Horario</label>
+                        <select name="id_horario" class="form-control"id="horario" onchange="horarioF()" required>
+                            <option>...</option>
+                            <option value='HL02' >Turno Vespertino</option>
+                            <option value='HL03'>Turno Nocturno</option>
+                            <option value='HL04'>Rolar Turnos</option>
+                        </select>
+                        <span class="input-group-addon" id="basic-addon1">Sexo</label>
+                        <select name="sexo" class="form-control"  id="sexo" onchange="sexoF()" required>
+                            <option>...</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Indistinto">Indistinto</option>
+                        </select>
+        
+                        <span class="input-group-addon">Sueldo</label>
+                        <select name="sueldo_deseado" class="form-control" id="sueldo" onchange="sueldoF()" required>
+                            <option>...</option>
+                            <option value='0'> $ 0 - 5,000 Mensuales</option>
+                            <option value='5000'> $ 5,000 - 10,000 Mensuales</option>
+                            <option value='10000'> $ 10,000 - 15,000 Mensuales</option>
+                            <option value='15000'> $ 15,000 - 20,000 Mensuales</option>
+                            <option value='20000'> $ 20,000 - 25,000 Mensuales</option>
+                            <option value='25000'> $ 25,000 - 30,000 Mensuales</option>
+                            <option value='30000'> $ 30,000 - 35,000 Mensuales</option>
+                            <option value='35000'> $ 35,000 - 40,000 Mensuales</option>
+                            <option value='40000'> $ 40,000 - 45,000 Mensuales</option>
+                            <option value='45000'> $ 45,000 - 50,000 Mensuales</option>
+                            <option value='50000'> $ 50,000 - o más Mensuales</option> 
+                        </select>
+        
+                    </div>
+        
+                </form> -->
+        <div class="alert alert-success" role="alert" id="success" style="display: none;" align="center">Te has postulado correctamente</div>
+        <div id="table">
+
+            <div class="panel-body table-responsive" >
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Empresa</th>
+                            <th>Puesto</th>
+                            <th>Sueldo</th>
+                            <th>Sexo</th>
+                            <th>Edad</th>
+                            <th>Horario</th>
+                            <th>Dias a laborar</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $a = 0;
+                        foreach ($this->paginator as $empresa) : // <-- change here!  
+                            $a++;
+                            ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($empresa->nombre_comercial); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->puesto); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->sueldo); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->sexo); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->edad); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->horario_a_laborar); ?></td>
+                                <td><?php echo $this->escapeHtml($empresa->dias_a_laborar); ?></td>
+                                <td><a href="#" id="ver<?php echo $a; ?>" rfc="<?php echo $empresa->id_rfc; ?>"
+                                       digito="<?php echo $empresa->digito_verificador; ?>" 
+                                       vacante="<?php echo $empresa->num_vacante; ?> 
+                                       " onclick="verF(this)">Ver</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Vacante</h4>
+                        </div>
+                        <div class="modal-body row" id="bodymodal" align="center">
+                            <form name="form1" action="vacantes" target="iframeAux" method="post">
+                                <div class="col-lg-6">
+                                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                        <label>Num vacante</label>
+                                        <input name="num_vacante" id="vacante" type="number" class="form-control" disabled>
+                                    </div>
+                                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                        <label>Vacantes disponibles</label>
+                                        <input name="vacantes_disponibles" id="disponibles" type="number" class="form-control" required>
+                                    </div>
+                                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                        <label>Actividades a realizar</label>
+                                        <input name="actividades_realizar" id="actividades" type="text" class="form-control" required>
+                                    </div>
+                                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                        <select name="horario_a_laborar" id="horario" class="form-control">
+                                            <option value="1">Activa</option>
+                                            <option value="0">DesActivada</option> 
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                        <label>Nº Carrera</label>
+                                        <input name="id_carrera" id="id_carrera" type="number" class="form-control" required>
+                                    </div>
+                                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                        <label>Example label</label>
+                                        <input name="carrera" id="carrera_text" type="text" class="form-control" required>
+                                    </div>
+                                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                        <label>Semestres</label>
+                                        <input name="semestres_totales" id="semestres" type="text" class="form-control" required>
+                                    </div>
+                                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                        <select name="status" id="status" class="form-control">
+                                            <option value="1">Activa</option>
+                                            <option value="0">DesActivada</option> 
+                                        </select>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <?php
+            // add at the end of the file after the table
+            echo $this->paginationControl(
+                    // the paginator object
+                    $this->paginator,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                'url' => $this->url('Administrador', array('controller' => 'Administrador', 'action' => 'vacanteactiva'))
+                    )
+            );
+            ?>
+        </div>
+        <button class="btn btn-default" data-toggle="modal" data-target="#myModal" >AGREGAR</button>
+    </div>
+</div>
+
+<script>
+    function edadF(event) {
+        var edad = parseInt(document.getElementById("edad").value);
+        $("#table").load("vacantes #table", {where: "edad BETWEEN " +
+                    (edad + 2) + " AND " + (edad + 2)});
+    }
+    function horarioF() {
+        $("#table").load("vacantes #table", {where: "horario = '" +
+                    document.getElementById("horario").value + "'"});
+    }
+    function sexoF() {
+        $("#table").load("vacantes #table", {where: "sexo = '" +
+                    document.getElementById("sexo").value + "'"});
+    }
+    function sueldoF() {
+        var sueldo = parseInt(document.getElementById("sueldo").value);
+        $("#table").load("vacantes #table", {where: "sueldo BETWEEN " +
+                    sueldo + " AND " + (sueldo + 5000)});
+    }
+    function verF(e) {
+        $("#myModal").modal("show");
+        $('#bodymodal').html('<div align="center"><img src="http://img.ffffound.com/static-data/assets/6/77443320c6509d6b500e288695ee953502ecbd6d_m.gif"/></div>');
+        $("#bodymodal").load("vacanteid", {id_rfc: $(e).attr("rfc"),
+            digito_verificador: $(e).attr("digito"), num_vacante: $(e).attr("vacante")
+        });
+    }
+    function postularF(e) {
+        $.post('vacantes', {id_rfc: $(e).attr("rfc"), num_vacante: $(e).attr("vacante"),
+            digito_verificador: $(e).attr("digito")})
+                .done(function () {
+                    var success = document.getElementById("success");
+                    success.style.display = "block";
+                    setTimeout(function () {
+                        document.getElementById("success").style.display = "none";
+                    }, 2000);
+                })
+                .fail(function (data) {
+                    alert(data);
+                });
+    }
+    function autorizarF(e) {
+        $.post('vacanteactiva', {id_rfc: $(e).attr("rfc"), digito_verificador: $(e).attr("digito"),
+            num_vacante: $(e).attr("num_vacante"), status: 1})
+                .done(function () {
+                    var success = document.getElementById("success");
+                    success.style.display = "block";
+                    setTimeout(function () {
+                        document.getElementById("success").style.display = "none";
+                        $("#table").load("vacanteactiva #table");
+                    }, 2000);
+                })
+                .fail(function (data) {
+                    alert(data);
+                });
+    }
+    function rechazarF(e) {
+        $.post('vacanteactiva', {id_rfc: $(e).attr("rfc"), digito_verificador: $(e).attr("digito"),
+            num_vacante: $(e).attr("num_vacante"), status: 2})
+                .done(function () {
+                    var success = document.getElementById("success");
+                    success.style.display = "block";
+                    setTimeout(function () {
+                        document.getElementById("success").style.display = "none";
+                        $("#table").load("vacanteactiva #table");
+                    }, 2000);
+                })
+                .fail(function (data) {
+                    alert(data);
+                });
+    }
+</script>

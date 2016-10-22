@@ -1,0 +1,71 @@
+<div class="inner-content">
+    <div class="panel theme-panel">
+        <div class="panel-heading">
+
+            <span class="panel-title">
+                Perfil<i class="fa fa-pencil-square-o"></i>
+            </span>
+        </div>
+        <div class="alert alert-success" role="alert" id="success" style="display: none;" align="center">Datos Actualizados</div>
+        <div id="table">
+
+            <div class="modal-body" id="bodymodal" align="center">
+                <form name="form1" id="form1" action="" target="iframeAux" method="post">
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">RFC</span>
+                        <input name="id_rfc" id="id_rfc" type="text" class="form-control" readonly="true" value="<?php echo $Empresa->id_rfc; ?>" required>
+                    </div>
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">Digito Verificador</span>
+                        <input name="digito_verificador" id="digito_verificador" type="text" class="form-control" readonly="true" value="<?php echo $Empresa->digito_verificador; ?>" required>
+                    </div>
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">Razon Social</span>
+                        <input name="razon_social" id="razon_social" type="text" class="form-control" required value="<?php echo $Empresa->razon_social; ?>">
+                    </div>
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">Nombre Comercial</span>
+                        <input name="nombre_comercial" id="nombre_comercial" type="text" class="form-control" required value="<?php echo $Empresa->nombre_comercial; ?>">
+                    </div>
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">Telefono</span>
+                        <input name="telefono" id="telefono" type="number" class="form-control" required value="<?php echo $Empresa->telefono; ?>">
+                    </div>
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">Extension</span>
+                        <input name="extension" id="extension" type="text" class="form-control" required value="<?php echo $Empresa->extension; ?>">
+                    </div>
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">Correo Electronico</span>
+                        <input name="correo_electronico" id="correo_electronico" type="text" class="form-control" required value="<?php echo $Empresa->correo_electronico; ?>">
+                    </div>
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">Horario de atencion</span>
+                        <input name="horario_atencion" id="horario_atencion" type="text" class="form-control" required value="<?php echo $Empresa->horario_atencion; ?>">
+                    </div>
+                    <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                        <span class="input-group-addon" id="basic-addon1 ">Giro Empresa</span>
+                        <input name="giro_empresa" id="giro_empresa" type="text" class="form-control" required value="<?php echo $Empresa->giro_empresa; ?>">
+                    </div>
+
+                    <button  type="submit" class="btn btn-default">Aceptar</button>
+                </form>
+                <iframe name="iframeAux" id="iframeAux" style="display: none;"></iframe>
+            </div>
+
+        </div>
+        <?php //} ?>
+    </div>
+</div>
+
+
+
+</div>
+
+<script>
+    function fnExitoso() {
+        $("#table").load("perfil #table");
+        document.getElementById('success').style.display = "block";
+        document.getElementById('success').focus();
+        s
+    }</script>

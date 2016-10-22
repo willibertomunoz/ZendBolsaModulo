@@ -1,4 +1,58 @@
-<div class="inner-content">
-    <div class="panel theme-panel">
-    </div>
-</div>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <?php
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+//                ->prependStylesheet($this->basePath('css/style.css'))
+//                ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                ->prependStylesheet($this->basePath('awesome/css/font-awesome.min.css'))
+                ->prependStylesheet($this->basePath('css/newcss.css'))
+                ->prependStylesheet($this->basePath('css/hoe.css'))
+                ->prependStylesheet($this->basePath('css/timeline.css'));
+        ?>
+    </head>
+    <body>
+        <div align="right"><img src="../img/2.jpg">
+        </div>
+        <div align="center">Reportes</div><br><br><br>
+        <div align="center">Alumnos</div>
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>N°</th>
+                    <th><span>No. Cuenta</span></th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Correo</th>
+                    <th>Perfil</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $a = 0;
+                foreach ($this->alumnoP as $alumno) : // <-- change here!  
+                    $a++;
+                    ?>
+                    <tr>
+                        <td><?php echo $a; ?></td>
+                        <td><?php echo $this->escapeHtml($alumno->id_cuenta); ?></td>
+                        <td><?php echo $this->escapeHtml($alumno->nombre); ?></td>
+                        <td><?php
+                            echo $this->escapeHtml($alumno->apellido_paterno) . " " .
+                            $this->escapeHtml($alumno->apellido_materno);
+                            ?></td>
+                        <td><?php echo $this->escapeHtml($alumno->email_principal); ?></td>
+                        <td><?php
+                            if ($alumno->tipo_perfil == 1)
+                                echo "Publico";
+                            else {
+                                echo "privado";
+                            }
+                            ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </body>
+</html>

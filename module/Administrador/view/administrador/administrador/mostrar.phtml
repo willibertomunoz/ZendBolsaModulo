@@ -1,4 +1,189 @@
 <div class="inner-content">
     <div class="panel theme-panel">
+        <div class="panel-heading">
+
+            <span class="panel-title">
+                Administradores<i class="fa fa-pencil-square-o"></i>
+            </span>
+        </div>
+        <div class="alert alert-success" role="alert" id="success" style="display: none;" align="center">Empresa activada</div>
+        <div id="table">
+
+            <div class="panel-body table-responsive" >
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>RFC</th>
+                            <th>Nombre</th>
+                            <th>Apellido Paterno</th>
+                            <th>Apellido Materno</th>
+                            <th>Puesto</th>
+                            <th>Permiso</th>
+                            <th>Telefono</th>
+                            <th>Extension</th>
+                            <th>Campo</th>
+                            <th>Direccion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $a = 0;
+                        foreach ($this->paginator as $administrador) : // <-- change here!  
+                            $a++;
+                            ?>
+                            <tr>
+                                <td><?php echo $this->escapeHtml($administrador->id_rfc); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->nombre); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->apellido_paterno); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->apellido_materno); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->puesto); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->permisos); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->telefono); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->extension); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->campo); ?></td>
+                                <td><?php echo $this->escapeHtml($administrador->direccion_campo); ?></td>
+                                <td><a href="#" id_rfc="<?php echo $administrador->id_rfc; ?>" nombre="<?php echo $administrador->nombre; ?>" paterno="<?php echo $administrador->apellido_paterno; ?>"
+                                       materno="<?php echo $administrador->apellido_materno; ?>" puesto="<?php echo $administrador->puesto; ?>" permisos="<?php echo $administrador->permisos; ?>"
+                                       telefono="<?php echo $administrador->telefono; ?>" extension="<?php echo $administrador->extension; ?>" campo="<?php echo $administrador->campo; ?>"
+
+                                       direccion="<?php echo $administrador->direccion_campo; ?>" onclick="anclaF(this)">Editar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+                <?php
+                if ($this->paginator->count() == 0)
+                    echo"<h1 align='center'>No hay administradores</h1>";
+                ?>
+            </div>
+            <input value="AGREGAR" type="button" onclick="fnNuevo();" class="btn btn-default">
+            <?php
+            // add at the end of the file after the table
+            echo $this->paginationControl(
+                    // the paginator object
+                    $this->paginator,
+                    // the scrolling style
+                    'sliding',
+                    // the partial to use to render the control
+                    'partial/paginator.phtml',
+                    // the route to link to when a user clicks a control link
+                    array(
+                'url' => $this->url('Administrador', array('controller' => 'Administrador', 'action' => 'administradors'))
+                    )
+            );
+            ?>
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" align="center">Carrera</h4>
+                        </div>
+                        <div class="modal-body" id="bodymodal" align="center">
+                            <form name="form1" id="form1" action="mostrar" target="iframeAux" method="post">
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">RFC</span>
+                                    <input name="id_rfc" id="id_rfc" type="text" class="form-control" readonly="true" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Nombre</span>
+                                    <input name="nombre" id="nombre" type="text" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Apellido Paterno</span>
+                                    <input name="apellido_paterno" id="apellido_paterno" type="text" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Apellido Materno</span>
+                                    <input name="apellido_materno" id="apellido_materno" type="text" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Puesto</span>
+                                    <input name="puesto" id="puesto" type="text" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Permisos</span>
+                                    <select name="permisos" id="permisos" class="form-control">
+                                        <option value="0">Sin permisos</option>
+                                        <option value="1">Con permisos</option>
+                                    </select>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Telefono</span>
+                                    <input name="telefono" id="telefono" type="text" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Extension</span>
+                                    <input name="extension" id="extension" type="number" class="form-control" required>
+                                </div>
+                                <div class="input-group" style="padding-top: 20px; width: 50%;" >
+                                    <span class="input-group-addon" id="basic-addon1 ">Campo</span>
+                                    <select name="campo" id="campo" class="form-control">
+                                        <option value="1" selected>Campo 1</option>
+                                        <option value="4">Campo 4</option>
+                                    </select>
+                                </div>
+                                <input name="accion" id="accion" type="hidden">
+                            </form>
+
+                        </div>
+                        <div class="modal-footer"><div align="left" id="footer" ></div>
+                            <div align="center" id="footer" ><input value="Actualiza" id="submit" type="button" onclick="fnSubmit();" class="btn btn-default"> </div>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <iframe name="iframeAux" id="iframeAux" style="display: block;"></iframe>
+
+
 </div>
+<script>
+    function anclaF(e) {
+        $("#myModal").modal("show");
+        document.getElementById("id_rfc").readOnly =true;
+        document.getElementById("id_rfc").value = $(e).attr("id_rfc");
+        document.getElementById("nombre").value = $(e).attr("nombre");
+        document.getElementById("apellido_paterno").value = $(e).attr("paterno");
+        document.getElementById("apellido_materno").value = $(e).attr("materno");
+        document.getElementById("puesto").value = $(e).attr("puesto");
+        document.getElementById("permisos").value = $(e).attr("permisos");
+        document.getElementById("telefono").value = $(e).attr("telefono");
+        document.getElementById("extension").value = $(e).attr("extension");
+        document.getElementById("campo").value = $(e).attr("campo");
+        document.getElementById("submit").value = "Actualiza";
+
+        document.getElementById("accion").value = "actualiza";
+
+    }
+    function fnSubmit() {
+        if (document.getElementById("id_rfc").value != "") {
+            document.getElementById("form1").submit();
+            $("#myModal").modal("hide");
+        }
+        else
+            alert("No hay RFC de administrador");
+    }
+    function fnNuevo() {
+        $("#myModal").modal("show");
+        document.getElementById("id_rfc").readOnly =false;
+         document.getElementById("id_rfc").value = "";
+        document.getElementById("nombre").value = "";
+        document.getElementById("apellido_paterno").value = "";
+        document.getElementById("apellido_materno").value = "";
+        document.getElementById("puesto").value = "";
+        document.getElementById("telefono").value = "";
+        document.getElementById("extension").value = "";
+        document.getElementById("submit").value = "Agregar";
+
+    }
+    function fnrecarga() {
+
+        $("#main-content").load("mostrar");
+
+    }
+</script>

@@ -31,7 +31,7 @@
 //                ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
 //                ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
 //                ->prependFile($this->basePath('js/bootstrap-formhelpers-phone.js'))
-                ->prependFile($this->basePath('js/ajax.js'))
+                ->prependFile($this->basePath('js/Empresa.js'))
                 ->prependFile($this->basePath('js/hoe.js'))
                 ->prependFile($this->basePath('js/bootstrap.min.js', ' '))
                 ->prependFile($this->basePath('js/jquery.min.js'))
@@ -50,7 +50,7 @@
                              alt="UNAM.mx" />
                     </a>
                     <a href="http://www.cuautitlan.unam.mx/" title="Facultad de Estudios Superiores Cuautitlan" rel="home" >
-                        <img src="http://www.cuautitlan.unam.mx/imgs/stock/rotate.php" style="width: 50%; float: right;"
+                        <img src="<?php echo $this->basePath("/img/cuautitlan.png"); ?>" style="width: 13%; float: right;"
                              alt="FES Cuautitlán" height="80"/>
                     </a>
                     <div class="fecha" align="right" style="width: 100%;">    
@@ -191,56 +191,37 @@
                         <ul class="nav panel-list">
                             <li class="nav-level" align="center">Menu</li>
                             <li class="active">
-                                <a href="javascript:void(0)" >
+                                <a href="javascript:loadurl('info1.html','main-content');" >
                                     <i class="fa fa-tachometer"></i>
                                     <span class="menu-text">Dashboard</span>
                                     <span class="selected"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" id="postulaciones" class="menup">
+                                <a href="#" id="perfil" class="menup">
                                     <i class="fa fa-user"></i>
                                     <span class="menu-text">Perfil</span> 
                                     <span class="selected"></span>
                                 </a>
                             </li>
                             <li class="hoe-has-menu">
-                                <a href="javascript:void(0)">
+                                <a href="javascript:void(0)" id="vacantes">
                                     <i class="fa fa-pencil-square-o"></i>
                                     <span class="menu-text">Vacantes</span>
                                     <span class="selected"></span>
                                 </a>
-                                <ul class="hoe-sub-menu">
-                                    <li>
-                                        <a href="#" id="pass" class="menup">
-                                            <span class="menu-text">Crear</span>
-                                            <span class="selected"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" id="pass" class="menup">
-                                            <span class="menu-text">Ver</span>
-                                            <span class="selected"></span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#" id="pass" class="menup">
-                                            <span class="menu-text">Rechazadas</span>
-                                            <span class="selected"></span>
-                                        </a>
-                                    </li>
-                                </ul>
+                                
                             </li>
                             
                             <li>
-                                <a href="#" id="pass" class="menup">
+                                <a href="#" id="postulados" class="menup">
                                     <i class="fa fa-check-square"></i>
                                     <span class="menu-text">Postulados</span>
                                     <span class="selected"></span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" id="pass" class="menup">
+                                <a href="#" id="aspirantes" class="menup">
                                     <i class="fa fa-table"></i>
                                     <span class="menu-text">Aspirantes</span>
                                     <span class="selected"></span>
@@ -270,3 +251,4 @@
     </body>
 
 </html>
+
